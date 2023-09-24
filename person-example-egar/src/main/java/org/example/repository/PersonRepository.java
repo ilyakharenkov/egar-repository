@@ -28,13 +28,16 @@ public class PersonRepository implements Repository<Person, Long> {
                     new Person(
                             (long) i,
                             generatedName().get(i),
-                            generatedAge().get(i),
-                            generatedCard((long) i).get(i),
-                            generatedListDocument()
+                            generatedAge().get(i)
+                    ).addCard(
+                            generatedCard((long) i).get(i)
+                    ).addDocument(
+                           generatedListDocument().get(i)
                     )
             );
         }
     }
+
 
     private List<String> generatedName() {
         listName.addAll(List.of("Igor", "Petr", "Vasiliy"));
@@ -52,7 +55,7 @@ public class PersonRepository implements Repository<Person, Long> {
                 new Card(id, 168),
                 new Card(id, 152)
         ));
-        for(int i = 0; i <= 2; i++){
+        for (int i = 0; i <= 2; i++) {
             listCard.get(i).addVacations(generatedVacations().get(i));
         }
         return listCard;
@@ -65,7 +68,7 @@ public class PersonRepository implements Repository<Person, Long> {
         return listDocument;
     }
 
-    private List<Vacation> generatedVacations(){
+    private List<Vacation> generatedVacations() {
         return new ArrayList<>(List.of(
                 new Vacation(LocalDate.parse("2023-09-02"), LocalDate.parse("2023-09-16")),
                 new Vacation(LocalDate.parse("2023-06-06"), LocalDate.parse("2023-06-20")),

@@ -6,6 +6,8 @@ public class Document {
     private String name;
     private String description;
 
+    private Person person;
+
     public Document(){
 
     }
@@ -32,6 +34,13 @@ public class Document {
     }
     public void setDescription(String description){
         this.description = description;
+    }
+
+    public Person getPerson(){
+        return this.person;
+    }
+    public void setPerson(Person person){
+        this.person = person;
     }
 
 }

@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Person {
@@ -8,18 +9,16 @@ public class Person {
     private String name;
     private Integer age;
     private Card card;
-    private List<Document> listDocument;
+    private List<Document> listDocument = new ArrayList<>();
 
     public Person(){
 
     }
 
-    public Person(Long id, String name, Integer age, Card card, List<Document> listDocument) {
+    public Person(Long id, String name, Integer age) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.card = card;
-        this.listDocument = listDocument;
     }
 
     public Long getId() {
@@ -58,22 +57,43 @@ public class Person {
         this.listDocument = listDocument;
     }
 
+    public Person addCard(Card card){
+        this.card = card;
+        card.setPerson(this);
+        return this;
+    }
+
+    public Person addDocument(Document document){
+        this.listDocument.add(document);
+        document.setPerson(this);
+        return this;
+    }
+
     @Override
     public String toString() {
         return
                 "Табельный номер: " + this.id + "\n"
                         + "ФИО сотрудника: " + this.name + "\n"
                         + "Возраст сотрудника: " + this.age + "\n"
-                        + "Табель сотрудника - " + this.card.toString() + "\n"
+                        + "Табель сотрудника - " + cardView() + "\n"
                         + "Документы сотрудника - " + documentView() + "\n";
     }
 
-    public String documentView(){
-        for(Document document : this.listDocument){
-            return "\n      Имя документа: " + document.getName() +
-                    "\n      Описание документа: " + document.getDescription();
+    public String cardView(){
+        if(this.card != null){
+            return this.card.toString();
         }
-        return "";
+        return "Табель отсутсвует";
+    }
+
+    public String documentView(){
+        if(this.listDocument != null) {
+            for (Document document : this.listDocument) {
+                return "\n      Имя документа: " + document.getName() +
+                        "\n      Описание документа: " + document.getDescription();
+            }
+        }
+        return "Документы отсутсвуют";
     }
 
 }

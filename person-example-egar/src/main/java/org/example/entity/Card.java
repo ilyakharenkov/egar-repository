@@ -10,6 +10,8 @@ public class Card {
     private Integer countWorkTime;
     private List<Vacation> vacations = new ArrayList<>();
 
+    private Person person;
+
     public Card(){
 
     }
@@ -37,6 +39,13 @@ public class Card {
         this.vacations = vacations;
     }
 
+    public Person getPerson(){
+        return this.person;
+    }
+    public void setPerson(Person person){
+        this.person = person;
+    }
+
     public void addVacations(Vacation vacation){
         vacations.add(vacation);
         vacation.setCard(this);
@@ -49,11 +58,13 @@ public class Card {
     }
 
     private String viewVacations(){
-        for(Vacation vacation : this.vacations){
-            return "\n      Начало отпуска: " + vacation.getStartVacation()
-                    + "\n      Конец отпуска: " + vacation.getEndVacation();
+        if(this.vacations != null) {
+            for (Vacation vacation : this.vacations) {
+                return "\n      Начало отпуска: " + vacation.getStartVacation()
+                        + "\n      Конец отпуска: " + vacation.getEndVacation();
+            }
         }
-        return "";
+        return "Без отпуска работай";
     }
 
 
