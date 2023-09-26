@@ -5,6 +5,10 @@ import org.example.repository.Repository;
 
 import java.util.List;
 
+
+/**
+ * Методы добавление и удаление проверил в тесте
+ */
 public class PersonService {
 
     private final Repository<Person, Long> repository;

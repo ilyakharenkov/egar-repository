@@ -57,15 +57,14 @@ public class Card {
                 + viewVacations();
     }
 
-    private String viewVacations(){
+    public String viewVacations(){
         if(this.vacations != null) {
             for (Vacation vacation : this.vacations) {
                 return "\n      Начало отпуска: " + vacation.getStartVacation()
                         + "\n      Конец отпуска: " + vacation.getEndVacation();
             }
         }
-        return "Без отпуска работай";
+        return "Нет отпуска";
     }
-
 
 }

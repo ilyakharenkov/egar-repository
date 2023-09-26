@@ -7,9 +7,9 @@ import org.example.service.filter.WorkManager;
 public class PersonController {
 
     private final PersonService personService;
-    private final WorkManager<Person> averageTime;
+    private final WorkManager<Person, Double> averageTime;
 
-    public PersonController(PersonService personService, WorkManager<Person> averageTime){
+    public PersonController(PersonService personService, WorkManager<Person, Double> averageTime){
         this.personService = personService;
         this.averageTime = averageTime;
     }
@@ -17,6 +17,13 @@ public class PersonController {
     public void getPersons(){
         for(Person person : personService.getList()){
             System.out.println(person.toString());
+        }
+    }
+
+    public void getPersonAndCard(){
+        for (Person person : personService.getList()){
+            System.out.println(person.getName());
+            System.out.println(person.getCard().viewVacations());
         }
     }
 

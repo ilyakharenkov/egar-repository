@@ -14,7 +14,7 @@ public class Di {
     private final Repository<Person, Long> repository = new PersonRepository();
 
     private final PersonService personService = new PersonService(repository);
-    private final WorkManager<Person> averageTime = new AverageTime();
+    private final WorkManager<Person, Double> averageTime = new AverageTime();
 
     public final PersonController personController = new PersonController(personService, averageTime);
 

@@ -5,10 +5,11 @@ import java.util.List;
 
 public class Person {
 
+
     private Long id;
     private String name;
     private Integer age;
-    private Card card;
+    private Card card = new Card();
     private List<Document> listDocument = new ArrayList<>();
 
     public Person(){
@@ -57,16 +58,14 @@ public class Person {
         this.listDocument = listDocument;
     }
 
-    public Person addCard(Card card){
-        this.card = card;
-        card.setPerson(this);
-        return this;
-    }
-
-    public Person addDocument(Document document){
+    public void addDocument(Document document){
         this.listDocument.add(document);
         document.setPerson(this);
-        return this;
+    }
+
+    public void addCard(Card card){
+        this.card = card;
+        card.setPerson(this);
     }
 
     @Override
@@ -79,13 +78,6 @@ public class Person {
                         + "Документы сотрудника - " + documentView() + "\n";
     }
 
-    public String cardView(){
-        if(this.card != null){
-            return this.card.toString();
-        }
-        return "Табель отсутсвует";
-    }
-
     public String documentView(){
         if(this.listDocument != null) {
             for (Document document : this.listDocument) {
@@ -93,7 +85,15 @@ public class Person {
                         "\n      Описание документа: " + document.getDescription();
             }
         }
-        return "Документы отсутсвуют";
+        return "Нету документов";
     }
+
+    public String cardView(){
+        if(this.card != null){
+            return this.card.toString();
+        }
+        return "Нету карты";
+    }
+
 
 }

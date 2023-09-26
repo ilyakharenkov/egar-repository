@@ -25,6 +25,10 @@ public class Main {
                     viewHead();
                 }
                 case "3" -> {
+                    di.personController.getPersonAndCard();
+                    viewHead();
+                }
+                case "4" -> {
                     b = false;
                 }
             }
@@ -35,7 +39,8 @@ public class Main {
     private static void viewHead() {
         System.out.println("Введите 1 для отображения списка сотрудников");
         System.out.println("Введите 2 для отображения среднего времени работы в день");
-        System.out.println("Введите 3 для выхода");
+        System.out.println("Введите 3 для отображения отпусков");
+        System.out.println("Введите 4 для выхода");
 
 
     }

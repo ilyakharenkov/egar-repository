@@ -2,8 +2,8 @@ package org.example.service.filter;
 
 import org.example.entity.Person;
 
-public interface WorkManager<T> {
+public interface WorkManager<T, R> {
 
-    double getWorkTime(T essence);
+    R getWorkTime(T essence);
 
 }

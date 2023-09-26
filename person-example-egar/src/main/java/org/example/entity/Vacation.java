@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Vacation {
 
+
     private LocalDate startVacation;
     private LocalDate endVacation;
 
@@ -36,6 +37,12 @@ public class Vacation {
     }
     public void setCard(Card card){
         this.card = card;
+    }
+
+    @Override
+    public String toString(){
+        return "\nНачало: " + this.startVacation +
+                "\nКонец: " + this.endVacation;
     }
 
 

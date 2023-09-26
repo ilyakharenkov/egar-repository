@@ -11,11 +11,11 @@ import java.util.List;
 
 public class PersonRepository implements Repository<Person, Long> {
 
+
     private final List<Person> listPerson = new ArrayList<>();
     private final List<String> listName = new ArrayList<>();
     private final List<Integer> listAge = new ArrayList<>();
     private final List<Card> listCard = new ArrayList<>();
-    private final List<Vacation> listVacation = new ArrayList<>();
     private final List<Document> listDocument = new ArrayList<>();
 
     {
@@ -29,15 +29,12 @@ public class PersonRepository implements Repository<Person, Long> {
                             (long) i,
                             generatedName().get(i),
                             generatedAge().get(i)
-                    ).addCard(
-                            generatedCard((long) i).get(i)
-                    ).addDocument(
-                           generatedListDocument().get(i)
                     )
             );
+            listPerson.get(i).addDocument(generatedListDocument().get(i));
+            listPerson.get(i).addCard(generatedCard((long) i).get(i));
         }
     }
-
 
     private List<String> generatedName() {
         listName.addAll(List.of("Igor", "Petr", "Vasiliy"));

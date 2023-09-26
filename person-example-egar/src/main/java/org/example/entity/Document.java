@@ -5,7 +5,6 @@ public class Document {
     private Long id;
     private String name;
     private String description;
-
     private Person person;
 
     public Document(){
