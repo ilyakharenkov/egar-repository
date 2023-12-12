@@ -8,3 +8,7 @@
 <p>3. Инициализировать БД data.sql</p> 
 
 ![2](https://github.com/ilyakharenkov/egar-repository/assets/100045092/2ff19639-6ef6-4dc7-9a81-f57490f68566)
+
+<p>4. Поменять настройки application.properties</p> 
+
+![3](https://github.com/ilyakharenkov/egar-repository/assets/100045092/83e1a6f8-afa4-4fcd-be50-f3545248cf0b)
