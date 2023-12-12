@@ -1,2 +1,1 @@
-# egar-repository
-
+<h1 align="center">Описание как пользоваться проектом
