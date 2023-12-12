@@ -35,4 +35,12 @@
 
 ![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/3a7f6b44-987e-440b-92a0-6d944d19dcc7)
 
+<p>7. Авторизированные пользователи с ролью USER могут арендовать инструмент и посмотреть список аренды инструмента который они уже взяли</p>  
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/cd8a1a8c-68c7-40f9-a77b-bc221dcb4990)
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/c945d1ba-6243-4419-b80b-ae43c8f14c17)
+
+
+
 
