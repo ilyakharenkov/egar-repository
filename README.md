@@ -1,3 +1,3 @@
 <h1 align="center">Описание как пользоваться проектом
   <br>
-<img src="D:\image\alignment.jpg" alt="...">
+<img src="D:\image\alignment.jpg">
