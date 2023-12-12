@@ -51,6 +51,18 @@
 
 ![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/d90d37b4-9ddd-4318-a3b0-24cbae9c8ecf)
 
+<p>9. В разделе аренда есть сортировка</p>  
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/a28fc7c7-9102-4acf-a159-79699609e8c7)
+
+<p>10. Инструмент находящийся на обслуживании</p>
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/955fad07-d400-422c-bcb7-a01ccd885ee9)
+
+
+
+
+
 
 
 
