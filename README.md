@@ -1,7 +1,9 @@
 <h1 align="center">Руководство к проекту</h1>
 <p>1. Настроить application.properties</p> 
 
-![1](https://github.com/ilyakharenkov/egar-repository/assets/100045092/dcd3ef79-121e-4875-8825-23ca62047147)
+<p align=centr>
+<img src=![1](https://github.com/ilyakharenkov/egar-repository/assets/100045092/dcd3ef79-121e-4875-8825-23ca62047147)/>
+</p>
 
 <p>2. Запустить проект для создания таблиц БД</p> 
 
@@ -13,6 +15,6 @@
 
 ![3](https://github.com/ilyakharenkov/egar-repository/assets/100045092/83e1a6f8-afa4-4fcd-be50-f3545248cf0b)
 
-<p>5. Начальная страница</p> 
+<p>5. На начальной странице, не авторизированный пользователь может только просматривать ассортимент</p> 
 
 ![4](https://github.com/ilyakharenkov/egar-repository/assets/100045092/a4ed783f-265a-4e82-8b0f-b77e102ec027)
