@@ -1,21 +1,23 @@
 Руководство к проекту
 1. Настроить application.properties
 
-1
+![1](https://github.com/ilyakharenkov/egar-repository/assets/100045092/79a89722-03d2-4cb9-95c0-ce647c4c636b)
 
 2. Запустить проект для создания таблиц БД
 
 3. Инициализировать БД data.sql
 
-2
+![2](https://github.com/ilyakharenkov/egar-repository/assets/100045092/fce8e350-7e9f-4265-a762-5501e5891d68)
+
 
 4. Поменять настройки application.properties, перезапустить проект
 
-3
+![3](https://github.com/ilyakharenkov/egar-repository/assets/100045092/583c2acc-2fc3-44a9-8cf5-7c431c1d7624)
+
 
 5. На начальной странице, не авторизированный пользователь может только просматривать ассортимент
 
-4
+![4](https://github.com/ilyakharenkov/egar-repository/assets/100045092/8354c76b-5220-474f-a8f4-7223a40cdd58)
 
 6. Для авторизации можно зарегестрироваться или воспользоваться существующими пользователями
 
@@ -30,7 +32,9 @@
       
       Логин: client2
       Пароль: 12345
-image
+      
+![5](https://github.com/ilyakharenkov/egar-repository/assets/100045092/9b631d71-185a-4557-9e64-2e3260492be6)
+
 
 7. Авторизированные пользователи с ролью USER могут арендовать инструмент и посмотреть список аренды инструмента который они уже взяли
 
