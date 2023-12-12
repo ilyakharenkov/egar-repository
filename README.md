@@ -17,7 +17,8 @@
 
 5. На начальной странице, не авторизированный пользователь может только просматривать ассортимент
 
-![4](https://github.com/ilyakharenkov/egar-repository/assets/100045092/8354c76b-5220-474f-a8f4-7223a40cdd58)
+![4](https://github.com/ilyakharenkov/egar-repository/assets/100045092/26da1753-2edc-4f57-8968-351b43796177)
+
 
 6. Для авторизации можно зарегестрироваться или воспользоваться существующими пользователями
 
@@ -38,24 +39,26 @@
 
 7. Авторизированные пользователи с ролью USER могут арендовать инструмент и посмотреть список аренды инструмента который они уже взяли
 
-image
+![6](https://github.com/ilyakharenkov/egar-repository/assets/100045092/273eb193-33be-487e-8836-dad374764298)
 
-image
+![7](https://github.com/ilyakharenkov/egar-repository/assets/100045092/29edcbfa-1e5d-4df5-b762-8aa7a9ed4be8)
 
 8. Пользователь с ролью ADMIN могут смотреть Выручку, Аренду, Обслуживание, Архив и после того как аренда инструмента закончилась отправить его обслуживание, Добавлять новый инструмент, Удалять.
 
-image
+![8](https://github.com/ilyakharenkov/egar-repository/assets/100045092/beb2064a-a044-4087-9fdb-7001d626f93f)
 
-image
+![9](https://github.com/ilyakharenkov/egar-repository/assets/100045092/d4600cc9-0acd-410a-aad1-88f90b7f00e6)
 
-image
+![10](https://github.com/ilyakharenkov/egar-repository/assets/100045092/5a262289-b9e5-46cd-85af-c64b9fe51c4c)
 
-image
+![11](https://github.com/ilyakharenkov/egar-repository/assets/100045092/bba340a9-3708-42bf-9424-4b218b78ad7d)
+
 
 9. В разделе аренда есть сортировка
 
-image
+![12](https://github.com/ilyakharenkov/egar-repository/assets/100045092/0843f52f-dc2f-4d9a-bbb0-6e1b74089b43)
 
 10. Инструмент находящийся на обслуживании
 
-image
+![13](https://github.com/ilyakharenkov/egar-repository/assets/100045092/c9d31eb2-822e-4459-b314-bfe0658212f3)
+
