@@ -17,3 +17,8 @@
 
 ![4](https://github.com/ilyakharenkov/egar-repository/assets/100045092/a4ed783f-265a-4e82-8b0f-b77e102ec027)
 
+<p>6. Для авторизации можно зарегестрироваться или воспользоваться существующими пользователями</p> 
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/3a7f6b44-987e-440b-92a0-6d944d19dcc7)
+
+
