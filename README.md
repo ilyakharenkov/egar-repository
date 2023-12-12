@@ -41,9 +41,18 @@
 
 ![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/c945d1ba-6243-4419-b80b-ae43c8f14c17)
 
-<p>8. Пользователь с ролью ADMIN могут смотреть Выручку, Аренду, Обслуживание, Архив и после того как аренда инструмента закончилась отправить его обслуживание</p>  
+<p>8. Пользователь с ролью ADMIN могут смотреть Выручку, Аренду, Обслуживание, Архив и после того как аренда инструмента закончилась отправить его обслуживание, Добавлять новый инструмент, Удалять.</p>  
 
 ![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/38ce6c9f-775a-4f7a-9fe0-9250cd4ec22d)
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/f25224c9-bed1-45f9-85e6-d8b89e3318c5)
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/fd583c0d-b2a1-44f7-9ca8-f34cc562a099)
+
+![image](https://github.com/ilyakharenkov/egar-repository/assets/100045092/d90d37b4-9ddd-4318-a3b0-24cbae9c8ecf)
+
+
+
 
 
 
