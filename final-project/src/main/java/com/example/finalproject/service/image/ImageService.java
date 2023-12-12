@@ -1,6 +1,8 @@
 package com.example.finalproject.service.image;
 
 import com.example.finalproject.domain.entity.image.Image;
+import com.example.finalproject.domain.entity.instrument.Alignment;
+import com.example.finalproject.domain.entity.instrument.Countersink;
 import com.example.finalproject.domain.repository.image.ImageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,31 +20,21 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
 
+    //Путь к файлам сущности Alignment (Центровки).
+    private static final String DIRECTORY_ALIGNMENT = System.getProperty("user.dir") + "/src/main/resources/storage/alignment";
+
+    //Путь к файлам сущности Countersink (Зенковки).
+    private static final String DIRECTORY_COUNTERSINK = System.getProperty("user.dir") + "/src/main/resources/storage/countersink";
+
     public List<Image> findAll() {
         return imageRepository.findAll();
     }
 
-    //Р”РѕР±Р°РІРёС‚СЊ РІР°Р»РёРґР°С†РёСЋ РЅР° РїСЂРѕРІРµСЂРєСѓ multipartFile.getOriginalFilename().
-    public void save(List<MultipartFile> multipartFileList) {
-        multipartFileList.forEach(multipartFile -> {
-            if (!multipartFile.isEmpty()) {
-                String directory = System.getProperty("user.dir") + "/src/main/resources/storage";
-                Path path = Paths.get(directory, multipartFile.getOriginalFilename());
-                try {
-                    Files.write(path, multipartFile.getBytes());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                imageRepository.save(Image.builder()
-                        .name(multipartFile.getOriginalFilename())
-                        .downloadLink(directory)
-                        .build());
-            } else {
-                System.out.println("File not found");
-            }
-        });
+    public void save(Image image) {
+        imageRepository.save(image);
     }
 
+    //Получение файла по его пути.
     public File getImageDirectory(Long id) {
         for (Image image : findAll()) {
             if (image.getId().equals(id)) {
@@ -53,5 +45,60 @@ public class ImageService {
         return new File("");
     }
 
+    //Сохранение сущности Image.
+    public void saveImageAlignment(List<MultipartFile> multipartFileList, Alignment alignment) {
+        multipartFileList.forEach(multipartFile -> {
+            if (!multipartFile.isEmpty() && alignment != null) {
+                writeFile(multipartFile, DIRECTORY_ALIGNMENT);
+                var image = Image.builder()
+                        .name(multipartFile.getOriginalFilename())
+                        .downloadLink(DIRECTORY_ALIGNMENT)
+                        .alignment(alignment)
+                        .build();
+                this.save(image);
+            } else {
+                System.out.println("File not found");
+            }
+        });
+    }
 
+    //Сохранение сущности Image.
+    public void saveImageCountersink(List<MultipartFile> multipartFileList, Countersink countersink) {
+        multipartFileList.forEach(multipartFile -> {
+            if (!multipartFile.isEmpty()) {
+                writeFile(multipartFile, DIRECTORY_COUNTERSINK);
+                var image = Image.builder()
+                        .name(multipartFile.getOriginalFilename())
+                        .downloadLink(DIRECTORY_COUNTERSINK)
+                        .countersink(countersink)
+                        .build();
+                this.save(image);
+            } else {
+                System.out.println("File not found");
+            }
+        });
+    }
+
+
+    //Создание и запись файла.
+    private void writeFile(MultipartFile multipartFile, String directory) {
+        Path path = Paths.get(directory, multipartFile.getOriginalFilename());
+        try {
+            Files.write(path, multipartFile.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Удаление файла из ресурсов.
+    public void deleteFile(List<Image> imageList) {
+        imageList.forEach(image -> {
+            var path = Paths.get(image.getDownloadLink(), image.getName());
+            try {
+                Files.delete(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }

@@ -52,9 +52,8 @@ public class UserSecurityService implements UserDetailsService {
         );
     }
 
-    //Добавление нового клиента (Регитсрация).
+    //Добавление нового клиента (Регистрация).
     public void saveUserSecurity(UserSecurity userSecurity, Client client) {
-//        client.setProfile(new Profile());
         var us = UserSecurity.builder()
                 .username(userSecurity.getUsername())
                 .password(new BCryptPasswordEncoder().encode(userSecurity.getPassword()))

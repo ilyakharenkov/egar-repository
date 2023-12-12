@@ -1,66 +1,62 @@
 package com.example.finalproject.service.rent;
 
-import com.example.finalproject.domain.dto.instrument.AlignmentDto;
-import com.example.finalproject.domain.entity.archive.Archive;
-import com.example.finalproject.domain.entity.profit.Profit;
 import com.example.finalproject.domain.entity.rent.Rent;
 import com.example.finalproject.domain.repository.rent.RentRepository;
-import com.example.finalproject.mapping.instrument.AlignmentMapping;
-import com.example.finalproject.service.archive.ArchiveService;
-import com.example.finalproject.service.client.UserSecurityService;
-import com.example.finalproject.service.profit.ProfitService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
 public class RentService {
-    private final RentRepository rentRepository;
-    private final UserSecurityService userSecurityService;
-    private final ProfitService profitService;
-    private final AlignmentMapping alignmentMapping;
 
-    private final ArchiveService archiveService;
+    private final RentRepository rentRepository;
 
     //Спсиок всей аренды.
     public List<Rent> findAll() {
-        return rentRepository.findAll();
+        return rentRepository.findAll(Sort.by(Sort.Direction.ASC, "dayRent"));
     }
 
-    //Сохранение информации об аренде Alignment.
-    public void save(Principal principal, Rent rent, AlignmentDto alignmentDto) {
-        var us = userSecurityService.findByPrincipal(principal);
-        var a = new Archive();
-        var r = Rent.builder()
-                .dayRent(rent.getDayRent())
-                .startRental(LocalDate.now())
-                .endRental(executeEnd(LocalDate.now(), rent.getDayRent()))
-                .alignment(alignmentMapping.convertToEntity(alignmentDto))
-                .client(us.getClient())
-                .profit(Profit.builder().build())
-                .archive(a)
-                .build();
-        rentRepository.save(r);
-        profitService.save(r, alignmentDto);
-        a.setCreateArchive(r.getStartRental());
-        a.setDeleteArchive(r.getStartRental().plusYears(1));
-        a.setIdClient(r.getClient().getId());
-        a.setNameClient(r.getClient().getFirstName());
-        a.setSurnameClient(r.getClient().getSurname());
-        a.setIdInstrument(r.getAlignment().getId());
-        a.setNameInstrument(r.getAlignment().getName());
-        a.setStartRental(r.getStartRental());
-        a.setEndRental(r.getEndRental());
-        a.setDayRent(r.getDayRent());
-        archiveService.save(a);
+    //Список арендованного инструмента.
+    public List<Rent> findAllRent() {
+        return rentRepository.findAllRent();
     }
 
-    //Расчет когда нужно отдать инструмент.
-    private LocalDate executeEnd(LocalDate localDate, Integer day) {
+    //Найти существующую аренду инструмента если такая была.
+    public Rent findRentByAlignmentId(Long id) {
+        return rentRepository.findRentByAlignmentId(id)
+                .orElse(null);
+    }
+
+    //Найти существующую аренду инструмента если такая была.
+    public Rent findRentByCountersinkId(Long id) {
+        return rentRepository.findRentByCountersinkId(id)
+                .orElse(null);
+    }
+
+    //Показать пользователю какой у него инструмент в аренде.
+    public List<Rent> findRentByClient(Long id) {
+        return rentRepository.findRentByClient(id);
+    }
+
+    //Список освободившегося инструмента.
+    public List<Rent> findAllFree() {
+        return rentRepository.findAllFree();
+    }
+
+    //Сохранение информации об аренде.
+    public void save(Rent rent) {
+        rentRepository.save(rent);
+    }
+
+    //Расчет когда время аренды вышло.
+    public LocalDate timeOutRent(LocalDate localDate, Integer day) {
         return localDate.plusDays(day);
     }
 
@@ -70,6 +66,30 @@ public class RentService {
 
     public void update(Rent rent) {
         rentRepository.save(rent);
+    }
+
+    public List<Rent> sortByStartRental() {
+        return rentRepository.sortByStartRental();
+    }
+
+    public List<Rent> sortByEndRental() {
+        return rentRepository.sortByEndRental();
+    }
+
+    //Время аренды закончилось.
+    @Scheduled(cron = "0 0 3 * * *", zone = "Europe/Moscow")
+    @Transactional
+    public void timeOutRent() {
+        findAll().forEach(rent -> {
+            if (rent != null) {
+                if (rent.getCheckStatus()) {
+                    if (rent.getEndRental().compareTo(LocalDate.now()) <= 0) {
+                        rent.setCheckStatus(false);
+                        this.update(rent);
+                    }
+                }
+            }
+        });
     }
 
 

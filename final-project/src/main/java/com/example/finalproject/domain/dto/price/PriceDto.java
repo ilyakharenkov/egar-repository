@@ -18,21 +18,19 @@ public class PriceDto {
 
     private Double expenses;
 
+    private Integer markup;
+
+    private Double priceRentOfDay;
+
     private AlignmentDto alignmentDto;
 
     //Себестоимость.
     private Double costPrice;
-
-    //Наценка.
-    private Integer markup;
 
     //Дополнительная цена.
     private Double extraPrice;
 
     //Итоговая цена продажи.
     private Double sell;
-
-    //Цена за день аренды.
-    private Double rentOfDay;
 
 }

@@ -1,12 +1,13 @@
 package com.example.finalproject.controller.instrument;
 
-import com.example.finalproject.domain.dto.instrument.AlignmentDto;
-import com.example.finalproject.domain.dto.price.PriceDto;
 import com.example.finalproject.domain.entity.instrument.Alignment;
 import com.example.finalproject.domain.entity.price.Price;
 import com.example.finalproject.service.client.UserSecurityService;
+import com.example.finalproject.service.exception.ExceptionService;
 import com.example.finalproject.service.image.ImageService;
 import com.example.finalproject.service.instrument.AlignmentService;
+import com.example.finalproject.service.rent.RentService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,34 +24,46 @@ import java.util.List;
 @AllArgsConstructor
 public class AlignmentController {
     private final AlignmentService alignmentService;
-    private final UserSecurityService userSecurityService;
+    private final ExceptionService exceptionService;
     private final ImageService imageService;
+    private final UserSecurityService userSecurityService;
 
     @GetMapping("/alignment")
-    public String viewListAlignment(Model model, Principal principal){
+    public String findAllAlignment(Model model, Principal principal) {
         model.addAttribute("alignments", alignmentService.findAll());
-        model.addAttribute("principal", userSecurityService.findByPrincipal(principal));
+        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
         model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
         return "alignment";
     }
 
     @GetMapping("/alignment/{id}")
-    public String alignmentDetails(@PathVariable(name = "id") Long id, Model model){
-        model.addAttribute("alignment", alignmentService.getAlignmentById(id));
+    public String getAlignmentDetails(@PathVariable(name = "id") Long id, Model model, Principal principal) {
+        model.addAttribute("alignment", alignmentService.findById(id));
+        model.addAttribute("listImage", alignmentService.findById(id).getImageList());
+        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
+        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
         return "alignment-details";
     }
 
     @PostMapping("/alignment/add")
-    public String addAlignment(@RequestParam("listFile") List<MultipartFile> multipartFileList,
-                               AlignmentDto alignmentDto,
-                               PriceDto priceDto){
-        alignmentService.save(alignmentDto, priceDto);
-        imageService.save(multipartFileList);
+    public String saveAlignment(@RequestParam("listFile") List<MultipartFile> multipartFileList,
+                                Alignment alignment,
+                                Price price) {
+        try {
+            alignment.setPrice(price);
+            alignment.setCheckStatus(true);
+            imageService.saveImageAlignment(multipartFileList, alignment);
+            alignmentService.save(alignment);
+        } catch (ConstraintViolationException e) {
+            exceptionService.methodValidationInstrumentException(alignment);
+        }
         return "redirect:/alignment";
     }
 
     @PostMapping("/alignment/delete/{id}")
-    public String deleteAlignment(@PathVariable(name = "id") Long id){
+    public String deleteAlignment(@PathVariable(name = "id") Long id) {
+        var alignment = alignmentService.findById(id);
+        imageService.deleteFile(alignment.getImageList());
         alignmentService.deleteById(id);
         return "redirect:/alignment";
     }

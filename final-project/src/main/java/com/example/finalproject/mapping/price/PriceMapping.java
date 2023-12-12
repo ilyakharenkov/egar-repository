@@ -2,8 +2,6 @@ package com.example.finalproject.mapping.price;
 
 import com.example.finalproject.domain.dto.price.PriceDto;
 import com.example.finalproject.domain.entity.price.Price;
-import com.example.finalproject.mapping.instrument.AlignmentMapping;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +12,8 @@ public class PriceMapping {
                 .id(price.getId())
                 .expenses(price.getExpenses())
                 .purchase(price.getPurchase())
+                .markup(price.getMarkup())
+                .priceRentOfDay(price.getPriceRentOfDay())
                 .build();
     }
 
@@ -22,6 +22,8 @@ public class PriceMapping {
                 .id(priceDto.getId())
                 .expenses(priceDto.getExpenses())
                 .purchase(priceDto.getPurchase())
+                .markup(priceDto.getMarkup())
+                .priceRentOfDay(priceDto.getPriceRentOfDay())
                 .build();
     }
 

@@ -1,8 +1,11 @@
 package com.example.finalproject.mapping.instrument;
 
 import com.example.finalproject.domain.dto.instrument.AlignmentDto;
+import com.example.finalproject.domain.dto.price.PriceDto;
 import com.example.finalproject.domain.entity.instrument.Alignment;
+import com.example.finalproject.domain.entity.price.Price;
 import com.example.finalproject.mapping.price.PriceMapping;
+import com.example.finalproject.service.price.PriceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +13,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AlignmentMapping {
 
+    private final PriceService priceService;
     private final PriceMapping priceMapping;
 
-    public AlignmentDto convertToDto(Alignment alignment) {
+    public AlignmentDto convertToDto(Alignment alignment, Price price) {
         return AlignmentDto.builder()
                 .id(alignment.getId())
                 .name(alignment.getName())
@@ -21,8 +25,10 @@ public class AlignmentMapping {
                 .workLength(alignment.getWorkLength())
                 .angle(alignment.getAngle())
                 .checkStatus(alignment.getCheckStatus())
-                .priceDto(priceMapping.convertToDto(alignment.getPrice()))
+                .priceDto(priceService.convertPriceDto(price))
                 .rent(alignment.getRent())
+                .imageList(alignment.getImageList())
+                .renovation(alignment.getRenovation())
                 .build();
     }
 
@@ -37,6 +43,8 @@ public class AlignmentMapping {
                 .checkStatus(alignmentDto.getCheckStatus())
                 .price(priceMapping.convertToEntity(alignmentDto.getPriceDto()))
                 .rent(alignmentDto.getRent())
+                .imageList(alignmentDto.getImageList())
+                .renovation(alignmentDto.getRenovation())
                 .build();
     }
 

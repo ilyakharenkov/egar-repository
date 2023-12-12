@@ -17,7 +17,9 @@ public class MainController {
     @GetMapping("/")
     public String startPage(Model model, Principal principal) {
         model.addAttribute("client", userSecurityService.findByPrincipal(principal));
+        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
         return "main";
     }
+
 
 }

@@ -1,54 +1,48 @@
 package com.example.finalproject.service.instrument;
 
 import com.example.finalproject.domain.dto.instrument.AlignmentDto;
-import com.example.finalproject.domain.dto.price.PriceDto;
+import com.example.finalproject.domain.entity.instrument.Alignment;
 import com.example.finalproject.domain.repository.instrument.AlignmentRepository;
 import com.example.finalproject.mapping.instrument.AlignmentMapping;
-import com.example.finalproject.service.price.PriceService;
-import com.example.finalproject.service.rent.RentService;
+import com.example.finalproject.service.exception.ExceptionService;
+import com.example.finalproject.service.renovation.RenovationService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
-@EnableScheduling
 @AllArgsConstructor
 public class AlignmentService {
     private final AlignmentRepository alignmentRepository;
+    private final RenovationService renovationService;
     private final AlignmentMapping alignmentMapping;
-    private final PriceService priceService;
-
-    private final RentService rentService;
 
     public List<AlignmentDto> findAll() {
-        var alignmentDtoList = alignmentRepository.findAll()
+        return alignmentRepository.findAll()
                 .stream()
-                .map(alignmentMapping::convertToDto)
+                .map(alignment -> alignmentMapping.convertToDto(alignment, alignment.getPrice()))
                 .collect(Collectors.toList());
-        priceService.executeResult(alignmentDtoList);
-        return alignmentDtoList;
     }
 
-    //Поправить Exception.
-    public AlignmentDto getAlignmentById(Long id) {
-        for (AlignmentDto alignmentDto : findAll()) {
-            if (alignmentDto.getId().equals(id)) {
-                return alignmentDto;
-            }
-        }
-        return new AlignmentDto();
+    //Свободный инструмент.
+    public List<AlignmentDto> findFreeAlignment() {
+        return alignmentRepository.findFreeAlignment()
+                .stream()
+                .map(alignment -> alignmentMapping.convertToDto(alignment, alignment.getPrice()))
+                .collect(Collectors.toList());
     }
 
-    public void save(AlignmentDto alignmentDto, PriceDto priceDto) {
-        alignmentDto.setPriceDto(priceDto);
-        alignmentDto.setCheckStatus(true);
-        var alignment = alignmentMapping.convertToEntity(alignmentDto);
+    public Alignment findById(Long id) {
+        return alignmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found Alignment"));
+    }
+
+    public void save(Alignment alignment) {
         alignmentRepository.save(alignment);
     }
 
@@ -57,27 +51,31 @@ public class AlignmentService {
     }
 
     //Изменение статуса инструмента при его аренде.
-    public void checkStatus(AlignmentDto alignmentDto) {
-        alignmentDto.setCheckStatus(false);
-        update(alignmentDto);
+    public void checkStatusFalse(Alignment alignment) {
+        alignment.setCheckStatus(false);
+        this.update(alignment);
     }
 
-    //Поправить редактирование, данный способ работает если совпадет id сущности.
-    public void update(AlignmentDto alignmentDto) {
-        alignmentRepository.save(alignmentMapping.convertToEntity(alignmentDto));
+    public void update(Alignment alignment) {
+        alignmentRepository.save(alignment);
     }
 
-    //Время аренды закончилось.
-    @Scheduled(fixedRate = 40_000)
+    //Првоерка обслуживания инструмента на 5:30 утра.
+    @Scheduled(cron = "0 30 5 * * *", zone = "Europe/Moscow")
     @Transactional
-    public void timeOutRentAlignment() {
-        rentService.findAll().forEach(rent -> {
-//            if (rent.getEndRental().equals(LocalDate.now())) {
-                System.out.println("Delete rent");
-                rent.getAlignment().setCheckStatus(true);
-                update(alignmentMapping.convertToDto(rent.getAlignment()));
-                rentService.deleteById(rent.getId());
-//            }
+    public void endRenovationTime() {
+        renovationService.findAll().forEach(renovation -> {
+            if (renovation.getAlignment() != null) {
+                if (renovation.getCheckStatus()) {
+                    if (renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
+                        renovation.setCheckStatus(false);
+                        renovation.getAlignment().setCheckStatus(true);
+                        this.update(renovation.getAlignment());
+                        renovationService.update(renovation);
+                    }
+                }
+            }
         });
     }
+
 }

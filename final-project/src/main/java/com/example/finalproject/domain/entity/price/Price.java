@@ -1,7 +1,9 @@
 package com.example.finalproject.domain.entity.price;
 
 import com.example.finalproject.domain.entity.instrument.Alignment;
+import com.example.finalproject.domain.entity.instrument.Countersink;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,13 +25,28 @@ public class Price {
 
     //Закупочная цена у производителя.
     @Column
+    @NotNull
     private Double purchase;
 
     //Расходы на реализацию (Например заработная плата сотрудникам и аренда).
     @Column
+    @NotNull
     private Double expenses;
+
+    //Наценка.
+    @Column
+    @NotNull
+    private Integer markup;
+
+    //Цена аренды одного дня.
+    @Column
+    @NotNull
+    private Double priceRentOfDay;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "price")
     private Alignment alignment;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "price")
+    private Countersink countersink;
 
 }

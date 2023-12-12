@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>
-        Main page
-    </title>
-</head>
-<header>
-    <p>
-        <a href="/login">Sign In</a>  |
-        <a href="/logout">Sign Out</a>  |
-        <a href="/registration">Registration</a> |
-        <label>
-            <#if client.username??>
-                ${client.client.firstName}
-            </#if>
-        </label>
-    </p>
-</header>
-<body>
-<p><a href="/alignment">Alignment</a></p><br>
-</body>
-</html>
+<#import "blocks/base.ftlh" as b>
+<@b.template client, role>
+    <div>
+        <h2>Инструменты</h2>
+    </div>
+    <div class="card-list">
+        <div class="card">
+            <img src="/storage/alignment/alignment.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Центровка</h5>
+                <a href="/alignment" class="btn btn-primary">Перейти в раздел</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="/storage/countersink/countersink.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Зенковка</h5>
+                <a href="/countersink" class="btn btn-primary">Перейти в раздел</a>
+            </div>
+        </div>
+    </div>
+</@b.template>
