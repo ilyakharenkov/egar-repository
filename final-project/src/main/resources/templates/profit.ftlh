@@ -3,6 +3,9 @@
     <div>
         <h2>Доход</h2>
     </div>
+    <div>
+        <h3>Сумма доходов за 7 дней: ${sumProfit}</h3>
+    </div>
     <div class="card-list">
         <#list profitList as profit>
             <div class="card">

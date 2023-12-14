@@ -22,6 +22,7 @@ public class ProfitController {
         model.addAttribute("profitList", profitService.findAll());
         model.addAttribute("client", userSecurityService.findByPrincipal(principal));
         model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+        model.addAttribute("sumProfit", profitService.findSumProfit());
         return "/profit";
     }
 

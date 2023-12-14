@@ -17,6 +17,11 @@ public class ProfitService {
         return profitRepository.findAll();
     }
 
+    //Расчет прибыли за 7 дней.
+    public Integer findSumProfit(){
+        return profitRepository.findSumProfit().orElse(0);
+    }
+
     public void save(Profit profit){
         profitRepository.save(profit);
     }
