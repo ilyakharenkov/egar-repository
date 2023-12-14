@@ -10,10 +10,10 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>final-project</artifactId>
+    <artifactId>inventory-instrument</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>final-project</name>
-    <description>final-project</description>
+    <name>inventory-instrument</name>
+    <description>inventory-instrument</description>
     <properties>
         <java.version>17</java.version>
     </properties>

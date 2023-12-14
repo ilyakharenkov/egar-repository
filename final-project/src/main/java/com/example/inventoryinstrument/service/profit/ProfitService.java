@@ -1,0 +1,46 @@
+package com.example.inventoryinstrument.service.profit;
+
+import com.example.inventoryinstrument.domain.entity.profit.Profit;
+import com.example.inventoryinstrument.domain.repository.profit.ProfitRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@AllArgsConstructor
+public class ProfitService {
+    private final ProfitRepository profitRepository;
+
+    public List<Profit> findAll(){
+        return profitRepository.findAll();
+    }
+
+    //Расчет прибыли за 7 дней.
+    public Integer findSumProfit(){
+        return profitRepository.findSumProfit().orElse(0);
+    }
+
+    public void save(Profit profit){
+        profitRepository.save(profit);
+    }
+
+    //Создание экземпляра класса Profit.
+    public Profit createObjectProfit(Integer dayRent, Double priceDay){
+        return Profit.builder()
+                .dayRent(dayRent)
+                .income(this.executeIncome(dayRent, priceDay))
+                .tax(this.executeTax(this.executeIncome(dayRent, priceDay)))
+                .build();
+    }
+
+    //Расчет дохода.
+    private Double executeIncome(Integer dayRent, Double priceDay){
+        return dayRent * priceDay;
+    }
+
+    //Расчет налога.
+    private Double executeTax(Double income){
+        return income * 13 / 100;
+    }
+}
