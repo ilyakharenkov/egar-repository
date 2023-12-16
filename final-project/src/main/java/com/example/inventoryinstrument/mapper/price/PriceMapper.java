@@ -5,7 +5,7 @@ import com.example.inventoryinstrument.domain.entity.price.Price;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PriceMapping {
+public class PriceMapper {
 
     public PriceDto convertToDto(Price price){
         return PriceDto.builder()

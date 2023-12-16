@@ -17,7 +17,8 @@ public class RenovationService {
         return renovationRepository.findAll();
     }
 
-    //Возвращает Renovation конкретного инструмента.
+
+    //Р’РѕР·РІСЂР°С‰Р°РµС‚ Renovation РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Р°.
     public Renovation findRenovationByAlignmentId(Long id){
         return renovationRepository.findRenovationByAlignmentId(id).orElse(null);
     }
@@ -26,7 +27,7 @@ public class RenovationService {
         return renovationRepository.findRenovationByCountersinkId(id).orElse(null);
     }
 
-    //Создание экземпляра класса Renovation.
+    //РЎРѕР·РґР°РЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° Renovation.
     public Renovation createObjectRenovation(Renovation renovation){
         return Renovation.builder()
                 .countDay(renovation.getCountDay())

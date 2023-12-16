@@ -3,7 +3,8 @@ package com.example.inventoryinstrument.mapper.instrument;
 import com.example.inventoryinstrument.domain.dto.instrument.CountersinkDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Countersink;
 import com.example.inventoryinstrument.domain.entity.price.Price;
-import com.example.inventoryinstrument.mapper.price.PriceMapping;
+import com.example.inventoryinstrument.mapper.image.ImageMapper;
+import com.example.inventoryinstrument.mapper.price.PriceMapper;
 import com.example.inventoryinstrument.service.price.PriceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 public class CountersinkMapper {
 
     private final PriceService priceService;
-    private final PriceMapping priceMapping;
+    private final PriceMapper priceMapper;
+
+    private final ImageMapper imageMapper;
 
     public CountersinkDto convertToDto(Countersink countersink, Price price) {
         return CountersinkDto.builder()
@@ -26,8 +29,7 @@ public class CountersinkMapper {
                 .checkStatus(countersink.getCheckStatus())
                 .priceDto(priceService.convertPriceDto(price))
                 .rent(countersink.getRent())
-                .imageList(countersink.getImageList())
-                .renovation(countersink.getRenovation())
+                .imageDtoList(countersink.getImageList().stream().map(imageMapper::convertToDto).toList())
                 .build();
     }
 
@@ -40,10 +42,9 @@ public class CountersinkMapper {
                 .workLength(countersinkDto.getWorkLength())
                 .angle(countersinkDto.getAngle())
                 .checkStatus(countersinkDto.getCheckStatus())
-                .price(priceMapping.convertToEntity(countersinkDto.getPriceDto()))
+                .price(priceMapper.convertToEntity(countersinkDto.getPriceDto()))
                 .rent(countersinkDto.getRent())
-                .imageList(countersinkDto.getImageList())
-                .renovation(countersinkDto.getRenovation())
+                .imageList(countersinkDto.getImageDtoList().stream().map(imageMapper::convertToEntity).toList())
                 .build();
     }
 

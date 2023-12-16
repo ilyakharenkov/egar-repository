@@ -3,7 +3,8 @@ package com.example.inventoryinstrument.mapper.instrument;
 import com.example.inventoryinstrument.domain.dto.instrument.AlignmentDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.entity.price.Price;
-import com.example.inventoryinstrument.mapper.price.PriceMapping;
+import com.example.inventoryinstrument.mapper.image.ImageMapper;
+import com.example.inventoryinstrument.mapper.price.PriceMapper;
 import com.example.inventoryinstrument.service.price.PriceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 public class AlignmentMapper {
 
     private final PriceService priceService;
-    private final PriceMapping priceMapping;
+    private final PriceMapper priceMapper;
+
+    private final ImageMapper imageMapper;
 
     public AlignmentDto convertToDto(Alignment alignment, Price price) {
         return AlignmentDto.builder()
@@ -26,8 +29,7 @@ public class AlignmentMapper {
                 .checkStatus(alignment.getCheckStatus())
                 .priceDto(priceService.convertPriceDto(price))
                 .rent(alignment.getRent())
-                .imageList(alignment.getImageList())
-                .renovation(alignment.getRenovation())
+                .imageDtoList(alignment.getImageList().stream().map(imageMapper::convertToDto).toList())
                 .build();
     }
 
@@ -40,10 +42,9 @@ public class AlignmentMapper {
                 .workLength(alignmentDto.getWorkLength())
                 .angle(alignmentDto.getAngle())
                 .checkStatus(alignmentDto.getCheckStatus())
-                .price(priceMapping.convertToEntity(alignmentDto.getPriceDto()))
+                .price(priceMapper.convertToEntity(alignmentDto.getPriceDto()))
                 .rent(alignmentDto.getRent())
-                .imageList(alignmentDto.getImageList())
-                .renovation(alignmentDto.getRenovation())
+                .imageList(alignmentDto.getImageDtoList().stream().map(imageMapper::convertToEntity).toList())
                 .build();
     }
 
