@@ -19,7 +19,7 @@ public class ArchiveController {
     @GetMapping("/archive")
     public ResponseEntity<List<Archive>> findAll() {
         if (archiveService.findAll().isEmpty()) {
-            return ResponseEntity.badRequest().body(new ArrayList<>());
+            return ResponseEntity.ok().body(new ArrayList<>());
         } else {
             return ResponseEntity.ok()
                     .body(archiveService.findAll());

@@ -16,7 +16,7 @@ import java.nio.file.Files;
 public class ImageController {
     private final ImageService imageService;
 
-    //ResponseEntity обертка для классов Java, определяющий код возварата, хедеры, тело ответа.
+    //ResponseEntity РѕР±РµСЂС‚РєР° РґР»СЏ РєР»Р°СЃСЃРѕРІ Java, РѕРїСЂРµРґРµР»СЏСЋС‰РёР№ РєРѕРґ РІРѕР·РІР°СЂР°С‚Р°, С…РµРґРµСЂС‹, С‚РµР»Рѕ РѕС‚РІРµС‚Р°.
     @GetMapping("/images/{id}")
     public ResponseEntity<?> getImageById(@PathVariable Long id) throws IOException {
         var file = imageService.getImageDirectory(id);
