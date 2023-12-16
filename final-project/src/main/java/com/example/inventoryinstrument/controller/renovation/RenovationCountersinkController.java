@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 @Controller
 @AllArgsConstructor
@@ -42,38 +41,30 @@ public class RenovationCountersinkController {
 
     @PostMapping("/countersink/renovation/add/{id}")
     public String addRenovationCountersink(@PathVariable("id") Long id, Renovation renovation) {
-        try {
-            var countersink = countersinkService.findById(id);
-            var rent = rentService.findRentByCountersinkId(countersink.getId());
-            var renovationAlignment = renovationService.findRenovationByCountersinkId(countersink.getId());
-            if (rent != null && !rent.getCheckStatus()) {
-                if (renovationAlignment != null && !rent.getCheckStatus()) {
-                    if (!renovationAlignment.getCheckStatus() && !rent.getCheckStatus() && !countersink.getCheckStatus()) {
-                        renovationAlignment.setCountDay(renovation.getCountDay());
-                        renovationAlignment.setPriceDiagnostics(renovation.getPriceDiagnostics());
-                        renovationAlignment.setDescriptionResult(renovation.getDescriptionResult());
-                        renovationAlignment.setCountersink(countersink);
-                        renovationAlignment.setStartRenovation(LocalDate.now());
-                        renovationAlignment.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
-                        renovationAlignment.setResultPrice(renovation.getResultPrice());
-                        renovationAlignment.setCheckStatus(true);
-                        renovationService.update(renovationAlignment);
-                    } else {
-                        System.out.println("Инструмент еще на обслуживании или обслуживание не требуется");
-                        return "redirect:/alignment/renovation/{id}";
-                    }
+        var countersink = countersinkService.findById(id);
+        var rent = rentService.findRentByCountersinkId(countersink.getId());
+        var renovationAlignment = renovationService.findRenovationByCountersinkId(countersink.getId());
+        if (!rent.getCheckStatus()) {
+            if (renovationAlignment != null && !rent.getCheckStatus()) {
+                if (!renovationAlignment.getCheckStatus() && !rent.getCheckStatus() && !countersink.getCheckStatus()) {
+                    renovationAlignment.setCountDay(renovation.getCountDay());
+                    renovationAlignment.setPriceDiagnostics(renovation.getPriceDiagnostics());
+                    renovationAlignment.setDescriptionResult(renovation.getDescriptionResult());
+                    renovationAlignment.setCountersink(countersink);
+                    renovationAlignment.setStartRenovation(LocalDate.now());
+                    renovationAlignment.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
+                    renovationAlignment.setResultPrice(renovation.getResultPrice());
+                    renovationAlignment.setCheckStatus(true);
+                    renovationService.update(renovationAlignment);
                 } else {
-                    var ren = renovationService.createObjectRenovation(renovation);
-                    ren.setCountersink(countersink);
-                    renovationService.save(ren);
+                    System.out.println("Инструмент еще на обслуживании или обслуживание не требуется");
+                    return "redirect:/alignment/renovation/{id}";
                 }
             } else {
-                System.out.println("Обслуживание не требуется");
+                var ren = renovationService.createObjectRenovation(renovation);
+                ren.setCountersink(countersink);
+                renovationService.save(ren);
             }
-        } catch (NullPointerException | NoSuchElementException e) {
-            exceptionService.methodValidationInstrumentException(renovation);
-            System.out.println(e.getMessage());
-            return "redirect:/alignment/renovation/{id}";
         }
         return "redirect:/countersink";
     }

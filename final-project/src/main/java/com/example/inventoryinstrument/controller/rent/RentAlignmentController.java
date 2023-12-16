@@ -43,40 +43,17 @@ public class RentAlignmentController {
 
     @PostMapping("/alignment/rent/add/{id}")
     public String createRentAlignment(@PathVariable(name = "id") Long id, Principal principal, Rent rent) {
-        try {
-            var us = userSecurityService.findByPrincipal(principal);
-            var alignment = alignmentService.findById(id);
-            var archive = archiveService.createObjectArchive(us.getClient(), rent, alignment.getId(), alignment.getName());
-            var rentAlignment = rentService.findRentByAlignmentId(alignment.getId());
-            if (rentAlignment != null && !rentAlignment.getCheckStatus()) {
-                rentAlignment.setDayRent(rent.getDayRent());
-                rentAlignment.setStartRental(LocalDate.now());
-                rentAlignment.setEndRental(rentService.timeOutRent(LocalDate.now(), rent.getDayRent()));
-                rentAlignment.setCheckStatus(true);
-                rentAlignment.setAlignment(alignment);
-                rentAlignment.setClient(us.getClient());
-                rentAlignment.setArchive(archive);
-                rentService.update(rentAlignment);
-            } else {
-                Profit profit = profitService.createObjectProfit(rent.getDayRent(), alignment.getPrice().getPriceRentOfDay());
-                Rent r = Rent.builder()
-                        .dayRent(rent.getDayRent())
-                        .startRental(LocalDate.now())
-                        .endRental(rentService.timeOutRent(LocalDate.now(), rent.getDayRent()))
-                        .checkStatus(true)
-                        .alignment(alignment)
-                        .client(us.getClient())
-                        .archive(archive)
-                        .build();
-                profit.setRent(r);
-                profitService.save(profit);
-                rentService.save(r);
-            }
-            alignmentService.checkStatusFalse(alignment);
-        } catch (NullPointerException | NoSuchElementException e) {
-            System.out.println(e.getMessage());
-            return "redirect:/alignment/rent/{id}";
-        }
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var client = userSecurity.getClient();
+        var alignment = alignmentService.findById(id);
+        var archive = archiveService.createObjectArchive(client, rent, alignment.getId(), alignment.getName());
+        var rentAlignment = rentService.findRentByAlignmentId(alignment.getId());
+        var r = rentService.validationOfRentForSave(rentAlignment, rent, client, archive);
+        r.setAlignment(alignment);
+        var profit = profitService.createObjectProfit(rent.getDayRent(), alignment.getPrice().getPriceRentOfDay());
+        profit.setRent(r);
+        profitService.save(profit);
+        alignmentService.checkStatusFalse(alignment);
         return "redirect:/alignment";
     }
 }

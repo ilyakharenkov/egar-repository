@@ -42,44 +42,21 @@ public class RentCountersinkController {
         return "countersink-rent";
     }
 
-    //Сохранение аренды.
     @PostMapping("/countersink/rent/add/{id}")
     public String createRentCountersink(@PathVariable(name = "id") Long id, Principal principal, Rent rent) {
-        try {
-            var us = userSecurityService.findByPrincipal(principal);
-            var countersink = countersinkService.findById(id);
-            var archive = archiveService.createObjectArchive(us.getClient(), rent, countersink.getId(), countersink.getName());
-            var rentCountersink = rentService.findRentByCountersinkId(countersink.getId());
-            if (rentCountersink != null && !rentCountersink.getCheckStatus()) {
-                rentCountersink.setDayRent(rent.getDayRent());
-                rentCountersink.setStartRental(LocalDate.now());
-                rentCountersink.setEndRental(rentService.timeOutRent(LocalDate.now(), rent.getDayRent()));
-                rentCountersink.setCheckStatus(true);
-                rentCountersink.setCountersink(countersink);
-                rentCountersink.setClient(us.getClient());
-                rentCountersink.setArchive(archive);
-                rentService.update(rentCountersink);
-            } else {
-                Profit profit = profitService.createObjectProfit(rent.getDayRent(), countersink.getPrice().getPriceRentOfDay());
-                Rent r = Rent.builder()
-                        .dayRent(rent.getDayRent())
-                        .startRental(LocalDate.now())
-                        .endRental(rentService.timeOutRent(LocalDate.now(), rent.getDayRent()))
-                        .checkStatus(true)
-                        .countersink(countersink)
-                        .client(us.getClient())
-                        .archive(archive)
-                        .build();
-                profit.setRent(r);
-                profitService.save(profit);
-                rentService.save(r);
-            }
-            countersinkService.checkStatusFalse(countersink);
-        } catch (NullPointerException | NoSuchElementException e) {
-            System.out.println(e.getMessage());
-            return "redirect:/countersink/rent/{id}";
-        }
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var client = userSecurity.getClient();
+        var countersink = countersinkService.findById(id);
+        var archive = archiveService.createObjectArchive(client, rent, countersink.getId(), countersink.getName());
+        var rentCountersink = rentService.findRentByCountersinkId(countersink.getId());
+        var r = rentService.validationOfRentForSave(rentCountersink, rent, client, archive);
+        r.setCountersink(countersink);
+        var profit = profitService.createObjectProfit(rent.getDayRent(), countersink.getPrice().getPriceRentOfDay());
+        profit.setRent(r);
+        profitService.save(profit);
+        countersinkService.checkStatusFalse(countersink);
         return "redirect:/countersink";
     }
+
 
 }

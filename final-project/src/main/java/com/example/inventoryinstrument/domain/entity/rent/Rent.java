@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 //Аренда.
 @Entity
@@ -56,8 +57,8 @@ public class Rent {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Countersink countersink;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "rent")
-    private Profit profit;
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "rent")
+    private List<Profit> profit;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Archive archive;

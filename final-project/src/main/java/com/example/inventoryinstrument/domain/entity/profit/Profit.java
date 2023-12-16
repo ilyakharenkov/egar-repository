@@ -35,7 +35,7 @@ public class Profit {
     @NotNull
     private Double tax;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Rent rent;
 
 }

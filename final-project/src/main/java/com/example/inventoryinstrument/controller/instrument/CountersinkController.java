@@ -3,10 +3,8 @@ package com.example.inventoryinstrument.controller.instrument;
 import com.example.inventoryinstrument.domain.entity.instrument.Countersink;
 import com.example.inventoryinstrument.domain.entity.price.Price;
 import com.example.inventoryinstrument.service.client.UserSecurityService;
-import com.example.inventoryinstrument.service.exception.ExceptionService;
 import com.example.inventoryinstrument.service.image.ImageService;
 import com.example.inventoryinstrument.service.instrument.CountersinkService;
-import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +22,6 @@ import java.util.List;
 public class CountersinkController {
 
     private final CountersinkService countersinkService;
-    private final ExceptionService exceptionService;
     private final ImageService imageService;
     private final UserSecurityService userSecurityService;
 
@@ -59,14 +56,10 @@ public class CountersinkController {
     public String saveCountersink(@RequestParam("listFile") List<MultipartFile> multipartFileList,
                                   Countersink countersink,
                                   Price price) {
-        try {
-            countersink.setCheckStatus(true);
-            countersink.setPrice(price);
-            imageService.saveImageCountersink(multipartFileList, countersink);
-            countersinkService.save(countersink);
-        } catch (ConstraintViolationException e) {
-            exceptionService.methodValidationInstrumentException(countersink);
-        }
+        countersink.setCheckStatus(true);
+        countersink.setPrice(price);
+        imageService.saveImageCountersink(multipartFileList, countersink);
+        countersinkService.save(countersink);
         return "redirect:/countersink";
     }
 

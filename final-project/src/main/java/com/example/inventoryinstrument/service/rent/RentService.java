@@ -1,5 +1,8 @@
 package com.example.inventoryinstrument.service.rent;
 
+import com.example.inventoryinstrument.domain.entity.archive.Archive;
+import com.example.inventoryinstrument.domain.entity.client.Client;
+import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.entity.rent.Rent;
 import com.example.inventoryinstrument.domain.repository.rent.RentRepository;
 import lombok.AllArgsConstructor;
@@ -73,6 +76,30 @@ public class RentService {
 
     public List<Rent> sortByEndRental() {
         return rentRepository.sortByEndRental();
+    }
+
+    public Rent validationOfRentForSave(Rent oldRent, Rent rent, Client client, Archive archive) {
+        if (oldRent != null && !oldRent.getCheckStatus()) {
+            oldRent.setDayRent(rent.getDayRent());
+            oldRent.setStartRental(LocalDate.now());
+            oldRent.setEndRental(timeOutRent(LocalDate.now(), rent.getDayRent()));
+            oldRent.setCheckStatus(true);
+            oldRent.setClient(client);
+            oldRent.setArchive(archive);
+            this.update(oldRent);
+            return oldRent;
+        } else {
+            Rent newRent = Rent.builder()
+                    .dayRent(rent.getDayRent())
+                    .startRental(LocalDate.now())
+                    .endRental(timeOutRent(LocalDate.now(), rent.getDayRent()))
+                    .checkStatus(true)
+                    .client(client)
+                    .archive(archive)
+                    .build();
+            this.save(newRent);
+            return newRent;
+        }
     }
 
     //Время аренды закончилось.

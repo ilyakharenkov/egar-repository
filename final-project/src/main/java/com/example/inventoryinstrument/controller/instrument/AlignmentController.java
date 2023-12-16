@@ -1,15 +1,11 @@
 package com.example.inventoryinstrument.controller.instrument;
 
-import com.example.inventoryinstrument.domain.entity.client.UserSecurity;
 import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.entity.price.Price;
 import com.example.inventoryinstrument.service.client.UserSecurityService;
-import com.example.inventoryinstrument.service.exception.ExceptionService;
 import com.example.inventoryinstrument.service.image.ImageService;
 import com.example.inventoryinstrument.service.instrument.AlignmentService;
-import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 public class AlignmentController {
     private final AlignmentService alignmentService;
-    private final ExceptionService exceptionService;
     private final ImageService imageService;
     private final UserSecurityService userSecurityService;
 
@@ -60,20 +55,18 @@ public class AlignmentController {
     public String saveAlignment(@RequestParam("listFile") List<MultipartFile> multipartFileList,
                                 Alignment alignment,
                                 Price price) {
-        try {
-            alignment.setPrice(price);
-            alignment.setCheckStatus(true);
-            imageService.saveImageAlignment(multipartFileList, alignment);
-            alignmentService.save(alignment);
-        } catch (ConstraintViolationException e) {
-            exceptionService.methodValidationInstrumentException(alignment);
-        }
+        alignment.setPrice(price);
+        alignment.setCheckStatus(true);
+        imageService.saveImageAlignment(multipartFileList, alignment);
+        alignmentService.save(alignment);
         return "redirect:/alignment";
     }
 
     @PostMapping("/alignment/delete/{id}")
     public String deleteAlignment(@PathVariable(name = "id") Long id) {
+
         var alignment = alignmentService.findById(id);
+
         imageService.deleteFile(alignment.getImageList());
         alignmentService.deleteById(id);
         return "redirect:/alignment";
