@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.time.LocalDate;
 
 @Controller
 @AllArgsConstructor
@@ -38,31 +37,25 @@ public class RenovationAlignmentController {
 
     @PostMapping("/alignment/renovation/add/{id}")
     public String addRenovationAlignment(@PathVariable("id") Long id, Renovation renovation) {
+
         var alignment = alignmentService.findById(id);
         var rent = rentService.findRentByAlignmentId(alignment.getId());
         var renovationAlignment = renovationService.findRenovationByAlignmentId(alignment.getId());
-        if (!rent.getCheckStatus()) {
-            if (renovationAlignment != null && !rent.getCheckStatus()) {
-                if (!renovationAlignment.getCheckStatus() && !rent.getCheckStatus() && !alignment.getCheckStatus()) {
-                    renovationAlignment.setCountDay(renovation.getCountDay());
-                    renovationAlignment.setPriceDiagnostics(renovation.getPriceDiagnostics());
-                    renovationAlignment.setDescriptionResult(renovation.getDescriptionResult());
-                    renovationAlignment.setAlignment(alignment);
-                    renovationAlignment.setStartRenovation(LocalDate.now());
-                    renovationAlignment.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
-                    renovationAlignment.setResultPrice(renovation.getResultPrice());
-                    renovationAlignment.setCheckStatus(true);
-                    renovationService.update(renovationAlignment);
-                } else {
-                    System.out.println("Инструмент еще на обслуживании или обслуживание не требуется");
-                    return "redirect:/alignment/renovation/{id}";
-                }
-            } else {
-                var ren = renovationService.createObjectRenovation(renovation);
-                ren.setAlignment(alignment);
-                renovationService.save(ren);
-            }
+
+        //Проверка нструмента на обслуживании он или нет.
+        if (renovationAlignment != null && renovationAlignment.getCheckStatus()) {
+            return "redirect:/renovation-not-required";
         }
+
+        //Проверка что инструмент не в аренде.
+        if (!alignment.getCheckStatus() && !rent.getCheckStatus()) {
+            var r = renovationService.validationOfRenovationForSave(renovationAlignment, renovation);
+            r.setAlignment(alignment);
+            renovationService.save(r);
+        } else {
+            return "redirect:/renovation-not-required-rent";
+        }
+
         return "redirect:/alignment";
     }
 

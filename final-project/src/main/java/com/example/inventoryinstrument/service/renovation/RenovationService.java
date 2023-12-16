@@ -17,18 +17,17 @@ public class RenovationService {
         return renovationRepository.findAll();
     }
 
-
     //Возвращает Renovation конкретного инструмента.
-    public Renovation findRenovationByAlignmentId(Long id){
+    public Renovation findRenovationByAlignmentId(Long id) {
         return renovationRepository.findRenovationByAlignmentId(id).orElse(null);
     }
 
-    public Renovation findRenovationByCountersinkId(Long id){
+    public Renovation findRenovationByCountersinkId(Long id) {
         return renovationRepository.findRenovationByCountersinkId(id).orElse(null);
     }
 
     //Создание экземпляра класса Renovation.
-    public Renovation createObjectRenovation(Renovation renovation){
+    public Renovation createObjectRenovation(Renovation renovation) {
         return Renovation.builder()
                 .countDay(renovation.getCountDay())
                 .priceDiagnostics(renovation.getPriceDiagnostics())
@@ -40,11 +39,29 @@ public class RenovationService {
                 .build();
     }
 
+    //Проверяем существовал ли такой объект или нет.
+    //Если да то обновляем данные и возваращаем назад.
+    //Если нет то создаем и возваращаем новый.
+    public Renovation validationOfRenovationForSave(Renovation oldRenovation, Renovation renovation) {
+        if (oldRenovation != null && !oldRenovation.getCheckStatus()) {
+            oldRenovation.setCountDay(renovation.getCountDay());
+            oldRenovation.setPriceDiagnostics(renovation.getPriceDiagnostics());
+            oldRenovation.setDescriptionResult(renovation.getDescriptionResult());
+            oldRenovation.setStartRenovation(LocalDate.now());
+            oldRenovation.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
+            oldRenovation.setResultPrice(renovation.getResultPrice());
+            oldRenovation.setCheckStatus(true);
+            return oldRenovation;
+        } else {
+            return this.createObjectRenovation(renovation);
+        }
+    }
+
     public void save(Renovation renovation) {
         renovationRepository.save(renovation);
     }
 
-    public void update(Renovation renovation){
+    public void update(Renovation renovation) {
         renovationRepository.save(renovation);
     }
 }

@@ -1,11 +1,11 @@
 package com.example.inventoryinstrument.controller.rent;
 
-import com.example.inventoryinstrument.domain.entity.profit.Profit;
 import com.example.inventoryinstrument.domain.entity.rent.Rent;
 import com.example.inventoryinstrument.service.archive.ArchiveService;
 import com.example.inventoryinstrument.service.client.UserSecurityService;
 import com.example.inventoryinstrument.service.instrument.CountersinkService;
 import com.example.inventoryinstrument.service.profit.ProfitService;
+import com.example.inventoryinstrument.service.renovation.RenovationService;
 import com.example.inventoryinstrument.service.rent.RentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 @Controller
 @AllArgsConstructor
@@ -27,6 +25,8 @@ public class RentCountersinkController {
     private final ProfitService profitService;
     private final UserSecurityService userSecurityService;
     private final RentService rentService;
+
+    private final RenovationService renovationService;
 
     @GetMapping("/countersink/rent/{id}")
     public String getInfoRentCountersink(@PathVariable("id") Long id, Model model, Principal principal) {
@@ -49,11 +49,25 @@ public class RentCountersinkController {
         var countersink = countersinkService.findById(id);
         var archive = archiveService.createObjectArchive(client, rent, countersink.getId(), countersink.getName());
         var rentCountersink = rentService.findRentByCountersinkId(countersink.getId());
-        var r = rentService.validationOfRentForSave(rentCountersink, rent, client, archive);
-        r.setCountersink(countersink);
-        var profit = profitService.createObjectProfit(rent.getDayRent(), countersink.getPrice().getPriceRentOfDay());
-        profit.setRent(r);
-        profitService.save(profit);
+        var renovationCountersink = renovationService.findRenovationByCountersinkId(countersink.getId());
+
+        //Проверка инструмента в аренде он или нет.
+        if (rentCountersink != null && rentCountersink.getCheckStatus()) {
+            return "redirect:/renovation-not-required-rent";
+        }
+        //Проверка инструмента на осблуживании он или нет.
+        if (!countersink.getCheckStatus() && !renovationCountersink.getCheckStatus() || !countersink.getCheckStatus() && renovationCountersink == null) {
+            var r = rentService.validationOfRentForSave(rentCountersink, rent, client, archive);
+            r.setCountersink(countersink);
+            rentService.save(r);
+
+            var profit = profitService.createObjectProfit(rent.getDayRent(), countersink.getPrice().getPriceRentOfDay());
+            profit.setRent(r);
+            profitService.save(profit);
+        } else {
+            return "redirect:/renovation-not-required";
+        }
+
         countersinkService.checkStatusFalse(countersink);
         return "redirect:/countersink";
     }

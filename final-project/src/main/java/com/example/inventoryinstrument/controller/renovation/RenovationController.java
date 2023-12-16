@@ -17,7 +17,7 @@ public class RenovationController {
     private final UserSecurityService userSecurityService;
 
     @GetMapping("/renovation")
-    public String findAll(Model model, Principal principal){
+    public String findAll(Model model, Principal principal) {
 
         var renovationList = renovationService.findAll();
         var userSecurity = userSecurityService.findByPrincipal(principal);
@@ -27,6 +27,24 @@ public class RenovationController {
         model.addAttribute("client", userSecurity);
         model.addAttribute("role", isCheckRoleAdmin);
         return "renovation";
+    }
+
+    @GetMapping("/renovation-not-required-rent")
+    public String getRenovationNotRequiredRent(Model model, Principal principal) {
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
+        return "renovation-not-required-rent";
+    }
+
+    @GetMapping("/renovation-not-required")
+    public String getRenovationNotRequired(Model model, Principal principal) {
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
+        return "renovation-not-required";
     }
 
 }

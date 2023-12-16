@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.time.LocalDate;
 
 @Controller
 @AllArgsConstructor
@@ -39,30 +38,23 @@ public class RenovationCountersinkController {
 
     @PostMapping("/countersink/renovation/add/{id}")
     public String addRenovationCountersink(@PathVariable("id") Long id, Renovation renovation) {
+
         var countersink = countersinkService.findById(id);
         var rent = rentService.findRentByCountersinkId(countersink.getId());
         var renovationCountersink = renovationService.findRenovationByCountersinkId(countersink.getId());
-        if (!rent.getCheckStatus()) {
-            if (renovationCountersink != null && !rent.getCheckStatus()) {
-                if (!renovationCountersink.getCheckStatus() && !rent.getCheckStatus() && !countersink.getCheckStatus()) {
-                    renovationCountersink.setCountDay(renovation.getCountDay());
-                    renovationCountersink.setPriceDiagnostics(renovation.getPriceDiagnostics());
-                    renovationCountersink.setDescriptionResult(renovation.getDescriptionResult());
-                    renovationCountersink.setCountersink(countersink);
-                    renovationCountersink.setStartRenovation(LocalDate.now());
-                    renovationCountersink.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
-                    renovationCountersink.setResultPrice(renovation.getResultPrice());
-                    renovationCountersink.setCheckStatus(true);
-                    renovationService.update(renovationCountersink);
-                } else {
-                    System.out.println("Инструмент еще на обслуживании или обслуживание не требуется");
-                    return "redirect:/alignment/renovation/{id}";
-                }
-            } else {
-                var ren = renovationService.createObjectRenovation(renovation);
-                ren.setCountersink(countersink);
-                renovationService.save(ren);
-            }
+
+        //Проверка нструмента на обслуживании он или нет.
+        if (renovationCountersink != null && renovationCountersink.getCheckStatus()) {
+            return "redirect:/renovation-not-required";
+        }
+
+        //Проверка что инструмент не в аренде.
+        if (!countersink.getCheckStatus() && !rent.getCheckStatus()) {
+            var r = renovationService.validationOfRenovationForSave(renovationCountersink, renovation);
+            r.setCountersink(countersink);
+            renovationService.save(r);
+        } else {
+            return "redirect:/renovation-not-required-rent";
         }
         return "redirect:/countersink";
     }

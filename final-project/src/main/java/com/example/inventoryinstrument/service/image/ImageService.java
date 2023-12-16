@@ -56,8 +56,6 @@ public class ImageService {
                         .alignment(alignment)
                         .build();
                 this.save(image);
-            } else {
-                System.out.println("File not found");
             }
         });
     }
@@ -73,8 +71,6 @@ public class ImageService {
                         .countersink(countersink)
                         .build();
                 this.save(image);
-            } else {
-                System.out.println("File not found");
             }
         });
     }

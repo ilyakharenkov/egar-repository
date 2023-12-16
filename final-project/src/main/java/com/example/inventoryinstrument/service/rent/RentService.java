@@ -2,7 +2,6 @@ package com.example.inventoryinstrument.service.rent;
 
 import com.example.inventoryinstrument.domain.entity.archive.Archive;
 import com.example.inventoryinstrument.domain.entity.client.Client;
-import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.entity.rent.Rent;
 import com.example.inventoryinstrument.domain.repository.rent.RentRepository;
 import lombok.AllArgsConstructor;
@@ -78,6 +77,21 @@ public class RentService {
         return rentRepository.sortByEndRental();
     }
 
+    //Создание экземпляра класса Rent.
+    public Rent createObjectRent(Rent rent, Client client, Archive archive) {
+        return Rent.builder()
+                .dayRent(rent.getDayRent())
+                .startRental(LocalDate.now())
+                .endRental(timeOutRent(LocalDate.now(), rent.getDayRent()))
+                .checkStatus(true)
+                .client(client)
+                .archive(archive)
+                .build();
+    }
+
+    //Проверяем существовал ли такой объект или нет.
+    //Если да то обновляем данные и возваращаем назад.
+    //Если нет то создаем и возваращаем новый.
     public Rent validationOfRentForSave(Rent oldRent, Rent rent, Client client, Archive archive) {
         if (oldRent != null && !oldRent.getCheckStatus()) {
             oldRent.setDayRent(rent.getDayRent());
@@ -86,19 +100,9 @@ public class RentService {
             oldRent.setCheckStatus(true);
             oldRent.setClient(client);
             oldRent.setArchive(archive);
-            this.update(oldRent);
             return oldRent;
         } else {
-            Rent newRent = Rent.builder()
-                    .dayRent(rent.getDayRent())
-                    .startRental(LocalDate.now())
-                    .endRental(timeOutRent(LocalDate.now(), rent.getDayRent()))
-                    .checkStatus(true)
-                    .client(client)
-                    .archive(archive)
-                    .build();
-            this.save(newRent);
-            return newRent;
+            return this.createObjectRent(rent, client, archive);
         }
     }
 

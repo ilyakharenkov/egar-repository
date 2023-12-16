@@ -6,6 +6,7 @@ import com.example.inventoryinstrument.service.archive.ArchiveService;
 import com.example.inventoryinstrument.service.client.UserSecurityService;
 import com.example.inventoryinstrument.service.instrument.AlignmentService;
 import com.example.inventoryinstrument.service.profit.ProfitService;
+import com.example.inventoryinstrument.service.renovation.RenovationService;
 import com.example.inventoryinstrument.service.rent.RentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,8 @@ public class RentAlignmentController {
     private final ProfitService profitService;
     private final UserSecurityService userSecurityService;
     private final RentService rentService;
+
+    private final RenovationService renovationService;
 
     @GetMapping("/alignment/rent/{id}")
     public String getInfoRentAlignment(@PathVariable(name = "id") Long id, Model model, Principal principal) {
@@ -48,11 +51,25 @@ public class RentAlignmentController {
         var alignment = alignmentService.findById(id);
         var archive = archiveService.createObjectArchive(client, rent, alignment.getId(), alignment.getName());
         var rentAlignment = rentService.findRentByAlignmentId(alignment.getId());
-        var r = rentService.validationOfRentForSave(rentAlignment, rent, client, archive);
-        r.setAlignment(alignment);
-        var profit = profitService.createObjectProfit(rent.getDayRent(), alignment.getPrice().getPriceRentOfDay());
-        profit.setRent(r);
-        profitService.save(profit);
+        var renovationAlignment = renovationService.findRenovationByAlignmentId(alignment.getId());
+
+        //Проверка инструмента в аренде он или нет.
+        if(rentAlignment != null && rentAlignment.getCheckStatus()){
+            return "redirect:/renovation-not-required-rent";
+        }
+
+        //Проверка инструмента на осблуживании он или нет.
+        if(!alignment.getCheckStatus() && !renovationAlignment.getCheckStatus() || !alignment.getCheckStatus() && renovationAlignment == null){
+            var r = rentService.validationOfRentForSave(rentAlignment, rent, client, archive);
+            r.setAlignment(alignment);
+            rentService.save(r);
+            var profit = profitService.createObjectProfit(rent.getDayRent(), alignment.getPrice().getPriceRentOfDay());
+            profit.setRent(r);
+            profitService.save(profit);
+        } else {
+            return "redirect:/renovation-not-required";
+        }
+
         alignmentService.checkStatusFalse(alignment);
         return "redirect:/alignment";
     }
