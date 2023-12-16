@@ -4,6 +4,7 @@ import com.example.inventoryinstrument.domain.entity.archive.Archive;
 import com.example.inventoryinstrument.domain.entity.client.Client;
 import com.example.inventoryinstrument.domain.entity.rent.Rent;
 import com.example.inventoryinstrument.domain.repository.rent.RentRepository;
+import com.example.inventoryinstrument.mapper.rent.RentMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +19,8 @@ import java.util.List;
 public class RentService {
 
     private final RentRepository rentRepository;
+
+    private final RentMapper rentMapper;
 
     //Спсиок всей аренды.
     public List<Rent> findAll() {
@@ -94,13 +97,11 @@ public class RentService {
     //Если нет то создаем и возваращаем новый.
     public Rent validationOfRentForSave(Rent oldRent, Rent rent, Client client, Archive archive) {
         if (oldRent != null && !oldRent.getCheckStatus()) {
-            oldRent.setDayRent(rent.getDayRent());
-            oldRent.setStartRental(LocalDate.now());
-            oldRent.setEndRental(timeOutRent(LocalDate.now(), rent.getDayRent()));
-            oldRent.setCheckStatus(true);
-            oldRent.setClient(client);
-            oldRent.setArchive(archive);
-            return oldRent;
+
+            //Перенес в маппер.
+            var r = rentMapper.convertToUpdateRent(oldRent, rent, client, archive);
+            r.setEndRental(this.timeOutRent(LocalDate.now(), rent.getDayRent()));
+            return r;
         } else {
             return this.createObjectRent(rent, client, archive);
         }

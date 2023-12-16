@@ -2,6 +2,7 @@ package com.example.inventoryinstrument.service.renovation;
 
 import com.example.inventoryinstrument.domain.entity.renovation.Renovation;
 import com.example.inventoryinstrument.domain.repository.renovation.RenovationRepository;
+import com.example.inventoryinstrument.mapper.renovation.RenovationMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class RenovationService {
     private final RenovationRepository renovationRepository;
+
+    private final RenovationMapper renovationMapper;
 
     public List<Renovation> findAll() {
         return renovationRepository.findAll();
@@ -43,15 +46,10 @@ public class RenovationService {
     //Если да то обновляем данные и возваращаем назад.
     //Если нет то создаем и возваращаем новый.
     public Renovation validationOfRenovationForSave(Renovation oldRenovation, Renovation renovation) {
+
         if (oldRenovation != null && !oldRenovation.getCheckStatus()) {
-            oldRenovation.setCountDay(renovation.getCountDay());
-            oldRenovation.setPriceDiagnostics(renovation.getPriceDiagnostics());
-            oldRenovation.setDescriptionResult(renovation.getDescriptionResult());
-            oldRenovation.setStartRenovation(LocalDate.now());
-            oldRenovation.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
-            oldRenovation.setResultPrice(renovation.getResultPrice());
-            oldRenovation.setCheckStatus(true);
-            return oldRenovation;
+            //Перенес в mapper сеттеры.
+            return renovationMapper.convertToUpdateRenovation(oldRenovation, renovation);
         } else {
             return this.createObjectRenovation(renovation);
         }
