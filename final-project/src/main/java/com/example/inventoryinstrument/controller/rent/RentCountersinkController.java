@@ -56,7 +56,7 @@ public class RentCountersinkController {
             return "redirect:/renovation-not-required-rent";
         }
         //Проверка инструмента на осблуживании он или нет.
-        if (!countersink.getCheckStatus() && !renovationCountersink.getCheckStatus() || !countersink.getCheckStatus() && renovationCountersink == null) {
+        if (countersink.getCheckStatus() && renovationCountersink == null || countersink.getCheckStatus() && !renovationCountersink.getCheckStatus()) {
             var r = rentService.validationOfRentForSave(rentCountersink, rent, client, archive);
             r.setCountersink(countersink);
             rentService.save(r);

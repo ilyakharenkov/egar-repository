@@ -59,7 +59,7 @@ public class RentAlignmentController {
         }
 
         //Проверка инструмента на осблуживании он или нет.
-        if(!alignment.getCheckStatus() && !renovationAlignment.getCheckStatus() || !alignment.getCheckStatus() && renovationAlignment == null){
+        if(alignment.getCheckStatus() && renovationAlignment == null || alignment.getCheckStatus() && !renovationAlignment.getCheckStatus()){
             var r = rentService.validationOfRentForSave(rentAlignment, rent, client, archive);
             r.setAlignment(alignment);
             rentService.save(r);
