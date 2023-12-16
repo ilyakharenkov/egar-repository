@@ -19,10 +19,16 @@ public class ProfitController {
 
     @GetMapping("/profit")
     public String getProfit(Model model, Principal principal){
-        model.addAttribute("profitList", profitService.findAll());
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
-        model.addAttribute("sumProfit", profitService.findSumProfit());
+
+        var profitList = profitService.findAll();
+        var sumProfitIncome = profitService.findSumProfit();
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("profitList", profitList);
+        model.addAttribute("sumProfit", sumProfitIncome);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "/profit";
     }
 

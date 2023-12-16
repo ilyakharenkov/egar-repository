@@ -28,9 +28,14 @@ public class RenovationAlignmentController {
 
     @GetMapping("/alignment/renovation/{id}")
     public String getRenovationAlignment(@PathVariable("id") Long id, Model model, Principal principal) {
-        model.addAttribute("alignment", alignmentService.findById(id));
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+
+        var alignment = alignmentService.findById(id);
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("alignment", alignment);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "alignment-renovation";
     }
 

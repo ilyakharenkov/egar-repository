@@ -1,5 +1,6 @@
 package com.example.inventoryinstrument.controller.instrument;
 
+import com.example.inventoryinstrument.domain.entity.client.UserSecurity;
 import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.entity.price.Price;
 import com.example.inventoryinstrument.service.client.UserSecurityService;
@@ -8,6 +9,7 @@ import com.example.inventoryinstrument.service.image.ImageService;
 import com.example.inventoryinstrument.service.instrument.AlignmentService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,18 +31,30 @@ public class AlignmentController {
 
     @GetMapping("/alignment")
     public String findAllAlignment(Model model, Principal principal) {
-        model.addAttribute("alignments", alignmentService.findAll());
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+
+        var a = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var alignmentDtoList = alignmentService.findAll();
+        var userSecurity = userSecurityService.findByPrincipal(a);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(a);
+
+        model.addAttribute("alignments", alignmentDtoList);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "alignment";
     }
 
     @GetMapping("/alignment/{id}")
     public String getAlignmentDetails(@PathVariable(name = "id") Long id, Model model, Principal principal) {
-        model.addAttribute("alignment", alignmentService.findById(id));
-        model.addAttribute("listImage", alignmentService.findById(id).getImageList());
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+
+        var alignment = alignmentService.findById(id);
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("alignment", alignment);
+        model.addAttribute("listImage", alignment.getImageList());
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "alignment-details";
     }
 

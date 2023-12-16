@@ -18,11 +18,14 @@ public class ArchiveController {
 
     @GetMapping("/archive")
     public ResponseEntity<List<Archive>> findAll() {
-        if (archiveService.findAll().isEmpty()) {
+
+        var archiveList = archiveService.findAll();
+
+        if (archiveList.isEmpty()) {
             return ResponseEntity.ok().body(new ArrayList<>());
         } else {
             return ResponseEntity.ok()
-                    .body(archiveService.findAll());
+                    .body(archiveList);
         }
     }
 

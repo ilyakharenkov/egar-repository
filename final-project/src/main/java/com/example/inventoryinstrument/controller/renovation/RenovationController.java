@@ -18,9 +18,14 @@ public class RenovationController {
 
     @GetMapping("/renovation")
     public String findAll(Model model, Principal principal){
-        model.addAttribute("renovationList", renovationService.findAll());
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+
+        var renovationList = renovationService.findAll();
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("renovationList", renovationList);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "renovation";
     }
 

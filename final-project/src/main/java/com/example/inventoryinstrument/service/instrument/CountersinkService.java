@@ -38,7 +38,7 @@ public class CountersinkService {
     }
 
     public Countersink findById(Long id) {
-        return countersinkRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found Countersink"));
+        return countersinkRepository.findById(id).orElse(null);
     }
 
     public void save(Countersink countersink) {

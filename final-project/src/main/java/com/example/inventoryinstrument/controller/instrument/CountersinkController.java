@@ -30,18 +30,28 @@ public class CountersinkController {
 
     @GetMapping("/countersink")
     public String findAllCountersink(Model model, Principal principal) {
-        model.addAttribute("countersinks", countersinkService.findAll());
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+
+        var countersinkDtoList = countersinkService.findAll();
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("countersinks", countersinkDtoList);
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "countersink";
     }
 
     @GetMapping("/countersink/{id}")
     public String getCountersinkDetails(@PathVariable("id") Long id, Model model, Principal principal) {
-        model.addAttribute("countersink", countersinkService.findById(id));
-        model.addAttribute("listImage", countersinkService.findById(id).getImageList());
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
+
+        var countersink = countersinkService.findById(id);
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("countersink", countersink);
+        model.addAttribute("listImage", countersink.getImageList());
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "countersink-details";
     }
 

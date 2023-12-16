@@ -29,10 +29,15 @@ public class RentAlignmentController {
 
     @GetMapping("/alignment/rent/{id}")
     public String getInfoRentAlignment(@PathVariable(name = "id") Long id, Model model, Principal principal) {
-        model.addAttribute("client", userSecurityService.findByPrincipal(principal));
-        model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
-        model.addAttribute("alignment", alignmentService.findById(id));
-        model.addAttribute("listImage", alignmentService.findById(id).getImageList());
+
+        var alignment = alignmentService.findById(id);
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
+
+        model.addAttribute("alignment", alignment);
+        model.addAttribute("listImage", alignment.getImageList());
+        model.addAttribute("client", userSecurity);
+        model.addAttribute("role", isCheckRoleAdmin);
         return "alignment-rent";
     }
 

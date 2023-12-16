@@ -20,10 +20,10 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
 
-    //Путь к файлам сущности Alignment (Центровки).
+    //РџСѓС‚СЊ Рє С„Р°Р№Р»Р°Рј СЃСѓС‰РЅРѕСЃС‚Рё Alignment (Р¦РµРЅС‚СЂРѕРІРєРё).
     private static final String DIRECTORY_ALIGNMENT = System.getProperty("user.dir") + "/src/main/resources/storage/alignment";
 
-    //Путь к файлам сущности Countersink (Зенковки).
+    //РџСѓС‚СЊ Рє С„Р°Р№Р»Р°Рј СЃСѓС‰РЅРѕСЃС‚Рё Countersink (Р—РµРЅРєРѕРІРєРё).
     private static final String DIRECTORY_COUNTERSINK = System.getProperty("user.dir") + "/src/main/resources/storage/countersink";
 
     public List<Image> findAll() {
@@ -34,7 +34,7 @@ public class ImageService {
         imageRepository.save(image);
     }
 
-    //Получение файла по его пути.
+    //РџРѕР»СѓС‡РµРЅРёРµ С„Р°Р№Р»Р° РїРѕ РµРіРѕ РїСѓС‚Рё.
     public File getImageDirectory(Long id) {
         for (Image image : findAll()) {
             if (image.getId().equals(id)) {
@@ -45,7 +45,7 @@ public class ImageService {
         return new File("");
     }
 
-    //Сохранение сущности Image.
+    //РЎРѕС…СЂР°РЅРµРЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё Image РґР»СЏ Alignment.
     public void saveImageAlignment(List<MultipartFile> multipartFileList, Alignment alignment) {
         multipartFileList.forEach(multipartFile -> {
             if (!multipartFile.isEmpty() && alignment != null) {
@@ -62,7 +62,7 @@ public class ImageService {
         });
     }
 
-    //Сохранение сущности Image.
+    //РЎРѕС…СЂР°РЅРµРЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё Image РґР»СЏ Countersink.
     public void saveImageCountersink(List<MultipartFile> multipartFileList, Countersink countersink) {
         multipartFileList.forEach(multipartFile -> {
             if (!multipartFile.isEmpty()) {
@@ -80,7 +80,7 @@ public class ImageService {
     }
 
 
-    //Создание и запись файла.
+    //РЎРѕР·РґР°РЅРёРµ Рё Р·Р°РїРёСЃСЊ С„Р°Р№Р»Р°.
     private void writeFile(MultipartFile multipartFile, String directory) {
         Path path = Paths.get(directory, multipartFile.getOriginalFilename());
         try {
@@ -90,7 +90,7 @@ public class ImageService {
         }
     }
 
-    //Удаление файла из ресурсов.
+    //РЈРґР°Р»РµРЅРёРµ С„Р°Р№Р»Р° РёР· СЂРµСЃСѓСЂСЃРѕРІ.
     public void deleteFile(List<Image> imageList) {
         imageList.forEach(image -> {
             var path = Paths.get(image.getDownloadLink(), image.getName());
