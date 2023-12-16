@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CountersinkMapping {
+public class CountersinkMapper {
 
     private final PriceService priceService;
     private final PriceMapping priceMapping;

@@ -41,19 +41,19 @@ public class RenovationCountersinkController {
     public String addRenovationCountersink(@PathVariable("id") Long id, Renovation renovation) {
         var countersink = countersinkService.findById(id);
         var rent = rentService.findRentByCountersinkId(countersink.getId());
-        var renovationAlignment = renovationService.findRenovationByCountersinkId(countersink.getId());
+        var renovationCountersink = renovationService.findRenovationByCountersinkId(countersink.getId());
         if (!rent.getCheckStatus()) {
-            if (renovationAlignment != null && !rent.getCheckStatus()) {
-                if (!renovationAlignment.getCheckStatus() && !rent.getCheckStatus() && !countersink.getCheckStatus()) {
-                    renovationAlignment.setCountDay(renovation.getCountDay());
-                    renovationAlignment.setPriceDiagnostics(renovation.getPriceDiagnostics());
-                    renovationAlignment.setDescriptionResult(renovation.getDescriptionResult());
-                    renovationAlignment.setCountersink(countersink);
-                    renovationAlignment.setStartRenovation(LocalDate.now());
-                    renovationAlignment.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
-                    renovationAlignment.setResultPrice(renovation.getResultPrice());
-                    renovationAlignment.setCheckStatus(true);
-                    renovationService.update(renovationAlignment);
+            if (renovationCountersink != null && !rent.getCheckStatus()) {
+                if (!renovationCountersink.getCheckStatus() && !rent.getCheckStatus() && !countersink.getCheckStatus()) {
+                    renovationCountersink.setCountDay(renovation.getCountDay());
+                    renovationCountersink.setPriceDiagnostics(renovation.getPriceDiagnostics());
+                    renovationCountersink.setDescriptionResult(renovation.getDescriptionResult());
+                    renovationCountersink.setCountersink(countersink);
+                    renovationCountersink.setStartRenovation(LocalDate.now());
+                    renovationCountersink.setEndRenovation(LocalDate.now().plusDays(renovation.getCountDay()));
+                    renovationCountersink.setResultPrice(renovation.getResultPrice());
+                    renovationCountersink.setCheckStatus(true);
+                    renovationService.update(renovationCountersink);
                 } else {
                     System.out.println("Инструмент еще на обслуживании или обслуживание не требуется");
                     return "redirect:/alignment/renovation/{id}";

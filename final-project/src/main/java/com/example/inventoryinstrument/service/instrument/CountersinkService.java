@@ -3,7 +3,7 @@ package com.example.inventoryinstrument.service.instrument;
 import com.example.inventoryinstrument.domain.dto.instrument.CountersinkDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Countersink;
 import com.example.inventoryinstrument.domain.repository.instrument.CountersinkRepository;
-import com.example.inventoryinstrument.mapping.instrument.CountersinkMapping;
+import com.example.inventoryinstrument.mapping.instrument.CountersinkMapper;
 import com.example.inventoryinstrument.service.renovation.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,12 +19,12 @@ import java.util.stream.Collectors;
 public class CountersinkService {
     private final CountersinkRepository countersinkRepository;
     private final RenovationService renovationService;
-    private final CountersinkMapping countersinkMapping;
+    private final CountersinkMapper countersinkMapper;
 
     public List<CountersinkDto> findAll() {
         return countersinkRepository.findAll()
                 .stream()
-                .map(countersink -> countersinkMapping.convertToDto(countersink, countersink.getPrice()))
+                .map(countersink -> countersinkMapper.convertToDto(countersink, countersink.getPrice()))
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +32,7 @@ public class CountersinkService {
     public List<CountersinkDto> findFreeCountersink() {
         return countersinkRepository.findFreeCountersink()
                 .stream()
-                .map(countersink -> countersinkMapping.convertToDto(countersink, countersink.getPrice()))
+                .map(countersink -> countersinkMapper.convertToDto(countersink, countersink.getPrice()))
                 .collect(Collectors.toList());
     }
 

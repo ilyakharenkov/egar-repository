@@ -3,7 +3,7 @@ package com.example.inventoryinstrument.service.instrument;
 import com.example.inventoryinstrument.domain.dto.instrument.AlignmentDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.repository.instrument.AlignmentRepository;
-import com.example.inventoryinstrument.mapping.instrument.AlignmentMapping;
+import com.example.inventoryinstrument.mapping.instrument.AlignmentMapper;
 import com.example.inventoryinstrument.service.renovation.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 public class AlignmentService {
     private final AlignmentRepository alignmentRepository;
     private final RenovationService renovationService;
-    private final AlignmentMapping alignmentMapping;
+    private final AlignmentMapper alignmentMapper;
 
     public List<AlignmentDto> findAll() {
         return alignmentRepository.findAll()
                 .stream()
-                .map(alignment -> alignmentMapping.convertToDto(alignment, alignment.getPrice()))
+                .map(alignment -> alignmentMapper.convertToDto(alignment, alignment.getPrice()))
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +33,7 @@ public class AlignmentService {
     public List<AlignmentDto> findFreeAlignment() {
         return alignmentRepository.findFreeAlignment()
                 .stream()
-                .map(alignment -> alignmentMapping.convertToDto(alignment, alignment.getPrice()))
+                .map(alignment -> alignmentMapper.convertToDto(alignment, alignment.getPrice()))
                 .collect(Collectors.toList());
     }
 
