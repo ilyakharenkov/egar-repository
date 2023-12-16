@@ -2,7 +2,6 @@ package com.example.inventoryinstrument.controller.renovation;
 
 import com.example.inventoryinstrument.domain.entity.renovation.Renovation;
 import com.example.inventoryinstrument.service.client.UserSecurityService;
-import com.example.inventoryinstrument.service.exception.ExceptionService;
 import com.example.inventoryinstrument.service.instrument.CountersinkService;
 import com.example.inventoryinstrument.service.renovation.RenovationService;
 import com.example.inventoryinstrument.service.rent.RentService;
@@ -22,7 +21,6 @@ public class RenovationCountersinkController {
 
     private final CountersinkService countersinkService;
     private final UserSecurityService userSecurityService;
-    private final ExceptionService exceptionService;
     private final RentService rentService;
     private final RenovationService renovationService;
 
