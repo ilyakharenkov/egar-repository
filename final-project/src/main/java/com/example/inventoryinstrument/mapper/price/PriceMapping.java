@@ -1,4 +1,4 @@
-package com.example.inventoryinstrument.mapping.price;
+package com.example.inventoryinstrument.mapper.price;
 
 import com.example.inventoryinstrument.domain.dto.price.PriceDto;
 import com.example.inventoryinstrument.domain.entity.price.Price;

@@ -3,7 +3,7 @@ package com.example.inventoryinstrument.service.instrument;
 import com.example.inventoryinstrument.domain.dto.instrument.AlignmentDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.repository.instrument.AlignmentRepository;
-import com.example.inventoryinstrument.mapping.instrument.AlignmentMapper;
+import com.example.inventoryinstrument.mapper.instrument.AlignmentMapper;
 import com.example.inventoryinstrument.service.renovation.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

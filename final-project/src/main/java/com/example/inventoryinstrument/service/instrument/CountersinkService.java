@@ -3,7 +3,7 @@ package com.example.inventoryinstrument.service.instrument;
 import com.example.inventoryinstrument.domain.dto.instrument.CountersinkDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Countersink;
 import com.example.inventoryinstrument.domain.repository.instrument.CountersinkRepository;
-import com.example.inventoryinstrument.mapping.instrument.CountersinkMapper;
+import com.example.inventoryinstrument.mapper.instrument.CountersinkMapper;
 import com.example.inventoryinstrument.service.renovation.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

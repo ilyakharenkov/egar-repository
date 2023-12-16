@@ -1,9 +1,9 @@
-package com.example.inventoryinstrument.mapping.instrument;
+package com.example.inventoryinstrument.mapper.instrument;
 
 import com.example.inventoryinstrument.domain.dto.instrument.AlignmentDto;
 import com.example.inventoryinstrument.domain.entity.instrument.Alignment;
 import com.example.inventoryinstrument.domain.entity.price.Price;
-import com.example.inventoryinstrument.mapping.price.PriceMapping;
+import com.example.inventoryinstrument.mapper.price.PriceMapping;
 import com.example.inventoryinstrument.service.price.PriceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
