@@ -30,15 +30,17 @@ public class UserSecurityService implements UserDetailsService {
 
     //Поиск имени авторизированного пользователя.
     public UserSecurity findByPrincipal(Principal principal) {
-        if (principal == null) return new UserSecurity();
+        if (principal == null) {
+            return new UserSecurity();
+        }
         return findByUsername(principal.getName());
     }
 
     //Есть ли у авторизированного пользователя роль админа.
     public Boolean findByRoleAdmin(Principal principal) {
         var us = findByPrincipal(principal);
-        for(Role role : us.getRoles()){
-            if(role.getName().equals("ROLE_ADMIN")){
+        for (Role role : us.getRoles()) {
+            if (role.getName().equals("ROLE_ADMIN")) {
                 return true;
             }
         }
