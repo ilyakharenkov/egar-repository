@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-//Изображение.
+
 @Entity
 @Data
 @Builder
@@ -21,20 +21,18 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Имя файла.
+    //РРјСЏ С„Р°Р№Р»Р°.
     @Column
     private String name;
 
-    //Ссылка на файл.
+    //РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ.
     @Column
     private String downloadLink;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Alignment alignment;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Countersink countersink;
-
-
 
 }

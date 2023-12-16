@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//Клиент.
+//РљР»РёРµРЅС‚.
 @Entity
 @Data
 @Builder
@@ -32,13 +32,10 @@ public class Client {
     @NotNull
     private String surname;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private Profile profile;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
     private List<Rent> rentList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "client")
+    @OneToOne(mappedBy = "client", fetch = FetchType.LAZY)
     private UserSecurity userSecurity;
 
 }

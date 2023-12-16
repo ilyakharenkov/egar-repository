@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
-//Аккаунт.
+//РђРєРєР°СѓРЅС‚.
 @Entity
 @Data
 @Builder
@@ -23,12 +23,12 @@ public class UserSecurity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Логин.
+    //Р›РѕРіРёРЅ.
     @Column
     @NotNull
     private String username;
 
-    //Пароль.
+    //РџР°СЂРѕР»СЊ.
     @Column
     @NotNull
     private String password;
@@ -41,7 +41,7 @@ public class UserSecurity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Client client;
 
 

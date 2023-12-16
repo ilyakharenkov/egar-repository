@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//Роли.
+//Р РѕР»Рё.
 @Entity
 @Data
 @Builder

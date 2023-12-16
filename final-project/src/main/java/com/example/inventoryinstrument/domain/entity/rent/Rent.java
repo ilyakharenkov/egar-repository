@@ -50,13 +50,13 @@ public class Rent {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Client client;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Alignment alignment;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Countersink countersink;
 
-    @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "rent")
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "rent")
     private Profit profit;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

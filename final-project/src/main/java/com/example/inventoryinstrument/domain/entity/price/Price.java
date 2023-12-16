@@ -43,10 +43,10 @@ public class Price {
     @NotNull
     private Double priceRentOfDay;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "price")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "price")
     private Alignment alignment;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "price")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "price")
     private Countersink countersink;
 
 }

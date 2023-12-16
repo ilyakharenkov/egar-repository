@@ -61,7 +61,7 @@ public class Alignment {
     @NotNull
     private Price price;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "alignment")
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "alignment")
     private Rent rent;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "alignment")
