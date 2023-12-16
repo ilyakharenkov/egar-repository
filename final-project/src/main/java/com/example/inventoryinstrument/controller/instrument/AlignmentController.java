@@ -32,11 +32,9 @@ public class AlignmentController {
     @GetMapping("/alignment")
     public String findAllAlignment(Model model, Principal principal) {
 
-        var a = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         var alignmentDtoList = alignmentService.findAll();
-        var userSecurity = userSecurityService.findByPrincipal(a);
-        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(a);
+        var userSecurity = userSecurityService.findByPrincipal(principal);
+        var isCheckRoleAdmin = userSecurityService.findByRoleAdmin(principal);
 
         model.addAttribute("alignments", alignmentDtoList);
         model.addAttribute("client", userSecurity);
