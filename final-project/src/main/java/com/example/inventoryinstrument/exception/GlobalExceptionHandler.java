@@ -1,6 +1,6 @@
 package com.example.inventoryinstrument.exception;
 
-import com.example.inventoryinstrument.service.client.UserSecurityService;
+import com.example.inventoryinstrument.client.service.UserSecurityService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
