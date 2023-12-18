@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -81,7 +83,6 @@ public class ImageService {
 
     //Создание и запись файла.
     private void writeFile(MultipartFile multipartFile, String directory) {
-
 //        Path path = Paths.get(directory, multipartFile.getOriginalFilename());
 //        try {
 //            Files.write(path, multipartFile.getBytes());
@@ -93,10 +94,11 @@ public class ImageService {
         // class path resource [storage/alignment/**.png] cannot be resolved to absolute file path because it does not exist
         try {
             var file = ResourceUtils.getFile(directory + multipartFile.getOriginalFilename());
+            System.out.println(file);
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(multipartFile.getBytes(), 0, multipartFile.getBytes().length);
+            fos.write(multipartFile.getBytes());
             fos.close();
-//            Files.write(file.toPath().toAbsolutePath(), multipartFile.getBytes());
+//            Files.write(file.toPath(), multipartFile.getBytes());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -105,7 +107,6 @@ public class ImageService {
     //Удаление файла из ресурсов.
     public void deleteFile(List<Image> imageList) {
         imageList.forEach(image -> {
-//            var path = Paths.get(image.getDownloadLink(), image.getName());
             try {
                 var path = ResourceUtils.getFile(image.getDownloadLink() + image.getName()).toPath();
                 Files.delete(path);
