@@ -1,9 +1,9 @@
 package com.example.inventoryinstrument.countersink.service;
 
-import com.example.inventoryinstrument.countersink.model.CountersinkDto;
-import com.example.inventoryinstrument.countersink.model.Countersink;
-import com.example.inventoryinstrument.countersink.repository.CountersinkRepository;
 import com.example.inventoryinstrument.countersink.mapper.CountersinkMapper;
+import com.example.inventoryinstrument.countersink.model.Countersink;
+import com.example.inventoryinstrument.countersink.model.CountersinkDto;
+import com.example.inventoryinstrument.countersink.repository.CountersinkRepository;
 import com.example.inventoryinstrument.renovation.service.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -64,16 +64,11 @@ public class CountersinkService {
     @Transactional
     public void endRenovationTime() {
         renovationService.findAll().forEach(renovation -> {
-            if (renovation.getCountersink() != null) {
-                if (renovation.getCheckStatus()) {
-                    if (renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
-                        System.out.println("Status countersink renovation.ftlh false");
-                        renovation.setCheckStatus(false);
-                        renovation.getCountersink().setCheckStatus(true);
-                        this.update(renovation.getCountersink());
-                        renovationService.update(renovation);
-                    }
-                }
+            if (renovation.getCountersink() != null && renovation.getCheckStatus() && renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
+                renovation.setCheckStatus(false);
+                renovation.getCountersink().setCheckStatus(true);
+                this.update(renovation.getCountersink());
+                renovationService.update(renovation);
             }
         });
     }

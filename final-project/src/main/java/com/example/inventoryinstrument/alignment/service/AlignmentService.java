@@ -1,9 +1,9 @@
 package com.example.inventoryinstrument.alignment.service;
 
-import com.example.inventoryinstrument.alignment.model.AlignmentDto;
-import com.example.inventoryinstrument.alignment.model.Alignment;
-import com.example.inventoryinstrument.alignment.repository.AlignmentRepository;
 import com.example.inventoryinstrument.alignment.mapper.AlignmentMapper;
+import com.example.inventoryinstrument.alignment.model.Alignment;
+import com.example.inventoryinstrument.alignment.model.AlignmentDto;
+import com.example.inventoryinstrument.alignment.repository.AlignmentRepository;
 import com.example.inventoryinstrument.renovation.service.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -64,15 +64,11 @@ public class AlignmentService {
     @Transactional
     public void endRenovationTime() {
         renovationService.findAll().forEach(renovation -> {
-            if (renovation.getAlignment() != null) {
-                if (renovation.getCheckStatus()) {
-                    if (renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
-                        renovation.setCheckStatus(false);
-                        renovation.getAlignment().setCheckStatus(true);
-                        this.update(renovation.getAlignment());
-                        renovationService.update(renovation);
-                    }
-                }
+            if (renovation.getAlignment() != null && renovation.getCheckStatus() && renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
+                renovation.setCheckStatus(false);
+                renovation.getAlignment().setCheckStatus(true);
+                this.update(renovation.getAlignment());
+                renovationService.update(renovation);
             }
         });
     }
