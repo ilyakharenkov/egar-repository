@@ -1,17 +1,19 @@
 package com.example.inventoryinstrument.image.service;
 
-import com.example.inventoryinstrument.image.model.Image;
 import com.example.inventoryinstrument.alignment.model.Alignment;
 import com.example.inventoryinstrument.countersink.model.Countersink;
+import com.example.inventoryinstrument.image.model.Image;
 import com.example.inventoryinstrument.image.repository.ImageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -21,7 +23,10 @@ public class ImageService {
     private final ImageRepository imageRepository;
 
     //Путь к файлам сущности Alignment (Центровки).
-    private static final String DIRECTORY_ALIGNMENT = System.getProperty("user.dir") + "/src/main/resources/storage/alignment";
+//    private static final String DIRECTORY_ALIGNMENT = System.getProperty("user.dir") + "/src/main/resources/storage/alignment/";
+
+    //Тестовый путь к директории.
+    private static final String DIRECTORY_ALIGNMENT = ResourceUtils.CLASSPATH_URL_PREFIX + "storage/alignment/";
 
     //Путь к файлам сущности Countersink (Зенковки).
     private static final String DIRECTORY_COUNTERSINK = System.getProperty("user.dir") + "/src/main/resources/storage/countersink";
@@ -35,11 +40,10 @@ public class ImageService {
     }
 
     //Получение файла по его пути.
-    public File getImageDirectory(Long id) {
+    public File getImageDirectory(Long id) throws FileNotFoundException {
         for (Image image : findAll()) {
             if (image.getId().equals(id)) {
-                var p = Paths.get(image.getDownloadLink(), image.getName());
-                return p.toFile();
+                return ResourceUtils.getFile(image.getDownloadLink() + image.getName());
             }
         }
         return new File("");
@@ -75,26 +79,40 @@ public class ImageService {
         });
     }
 
-
     //Создание и запись файла.
     private void writeFile(MultipartFile multipartFile, String directory) {
-        Path path = Paths.get(directory, multipartFile.getOriginalFilename());
+
+//        Path path = Paths.get(directory, multipartFile.getOriginalFilename());
+//        try {
+//            Files.write(path, multipartFile.getBytes());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        // Не может сохранить файл:
+        // class path resource [storage/alignment/**.png] cannot be resolved to absolute file path because it does not exist
         try {
-            Files.write(path, multipartFile.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
+            var file = ResourceUtils.getFile(directory + multipartFile.getOriginalFilename());
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(multipartFile.getBytes(), 0, multipartFile.getBytes().length);
+            fos.close();
+//            Files.write(file.toPath().toAbsolutePath(), multipartFile.getBytes());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     //Удаление файла из ресурсов.
     public void deleteFile(List<Image> imageList) {
         imageList.forEach(image -> {
-            var path = Paths.get(image.getDownloadLink(), image.getName());
+//            var path = Paths.get(image.getDownloadLink(), image.getName());
             try {
+                var path = ResourceUtils.getFile(image.getDownloadLink() + image.getName()).toPath();
                 Files.delete(path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
+
 }
