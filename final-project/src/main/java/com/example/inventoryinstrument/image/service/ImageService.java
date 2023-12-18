@@ -5,6 +5,7 @@ import com.example.inventoryinstrument.countersink.model.Countersink;
 import com.example.inventoryinstrument.image.model.Image;
 import com.example.inventoryinstrument.image.repository.ImageRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class ImageService {
 
@@ -94,7 +96,7 @@ public class ImageService {
         // class path resource [storage/alignment/**.png] cannot be resolved to absolute file path because it does not exist
         try {
             var file = ResourceUtils.getFile(directory + multipartFile.getOriginalFilename());
-            System.out.println(file);
+            log.info(String.valueOf(file.toPath()));
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(multipartFile.getBytes());
             fos.close();
