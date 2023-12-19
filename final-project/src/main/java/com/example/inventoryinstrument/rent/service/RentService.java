@@ -4,6 +4,7 @@ import com.example.inventoryinstrument.archive.model.Archive;
 import com.example.inventoryinstrument.client.model.Client;
 import com.example.inventoryinstrument.rent.mapper.RentMapper;
 import com.example.inventoryinstrument.rent.model.Rent;
+import com.example.inventoryinstrument.rent.model.RentDto;
 import com.example.inventoryinstrument.rent.repository.RentRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -46,13 +48,19 @@ public class RentService {
     }
 
     //Показать пользователю какой у него инструмент в аренде.
-    public List<Rent> findRentByClient(Long id) {
-        return rentRepository.findRentByClient(id);
+    public List<RentDto> findRentByClient(Long id) {
+        return rentRepository.findRentByClient(id)
+                .stream()
+                .map(rentMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
     //Список освободившегося инструмента.
-    public List<Rent> findAllFree() {
-        return rentRepository.findAllFree();
+    public List<RentDto> findAllFree() {
+        return rentRepository.findAllFree()
+                .stream()
+                .map(rentMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
     //Сохранение информации об аренде.
@@ -73,12 +81,18 @@ public class RentService {
         rentRepository.save(rent);
     }
 
-    public List<Rent> sortByStartRental() {
-        return rentRepository.sortByStartRental();
+    public List<RentDto> sortByStartRental() {
+        return rentRepository.sortByStartRental()
+                .stream()
+                .map(rentMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Rent> sortByEndRental() {
-        return rentRepository.sortByEndRental();
+    public List<RentDto> sortByEndRental() {
+        return rentRepository.sortByEndRental()
+                .stream()
+                .map(rentMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
     //Создание экземпляра класса Rent.
