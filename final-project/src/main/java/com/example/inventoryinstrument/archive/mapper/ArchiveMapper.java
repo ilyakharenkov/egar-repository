@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ArchiveMapper {
+
 
     public ArchiveDto convertToDto(Archive archive){
         return ArchiveDto.builder()
