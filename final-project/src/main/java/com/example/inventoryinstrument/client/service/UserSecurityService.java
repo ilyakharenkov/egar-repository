@@ -1,8 +1,6 @@
 package com.example.inventoryinstrument.client.service;
 
-import com.example.inventoryinstrument.client.model.Client;
-import com.example.inventoryinstrument.client.model.Role;
-import com.example.inventoryinstrument.client.model.UserSecurity;
+import com.example.inventoryinstrument.client.model.*;
 import com.example.inventoryinstrument.client.repository.RoleRepository;
 import com.example.inventoryinstrument.client.repository.UserSecurityRepository;
 import lombok.AllArgsConstructor;
@@ -24,9 +22,9 @@ import java.util.stream.Collectors;
 @Configuration
 @AllArgsConstructor
 public class UserSecurityService implements UserDetailsService {
+
     private final UserSecurityRepository userSecurityRepository;
     private final RoleRepository roleRepository;
-
 
     //Поиск имени авторизированного пользователя.
     public UserSecurity findByPrincipal(Principal principal) {

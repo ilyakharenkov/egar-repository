@@ -1,19 +1,27 @@
 package com.example.inventoryinstrument.profit.service;
 
+import com.example.inventoryinstrument.profit.mapper.ProfitMapper;
 import com.example.inventoryinstrument.profit.model.Profit;
+import com.example.inventoryinstrument.profit.model.ProfitDto;
 import com.example.inventoryinstrument.profit.repository.ProfitRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class ProfitService {
     private final ProfitRepository profitRepository;
 
-    public List<Profit> findAll(){
-        return profitRepository.findAll();
+    private final ProfitMapper profitMapper;
+
+    public List<ProfitDto> findAll(){
+        return profitRepository.findAll()
+                .stream()
+                .map(profitMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
     //Расчет прибыли за 7 дней.

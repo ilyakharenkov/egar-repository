@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.security.Principal;
 
 @Controller
-@Slf4j
 @AllArgsConstructor
 public class MainController {
 
@@ -23,15 +22,5 @@ public class MainController {
         model.addAttribute("role", userSecurityService.findByRoleAdmin(principal));
         return "main";
     }
-
-    @PostConstruct
-    public void test(){
-        log.info("Work info");
-        log.info("Work info");
-        log.info("Work info");
-        log.info("Work info");
-        log.info("Work info");
-    }
-
 
 }

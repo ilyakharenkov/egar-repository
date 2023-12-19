@@ -7,6 +7,7 @@ import com.example.inventoryinstrument.countersink.repository.CountersinkReposit
 import com.example.inventoryinstrument.renovation.service.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CountersinkService {
@@ -63,12 +65,13 @@ public class CountersinkService {
     @Scheduled(cron = "0 30 6 * * *", zone = "Europe/Moscow")
     @Transactional
     public void endRenovationTime() {
-        renovationService.findAll().forEach(renovation -> {
+        renovationService.findAllForScheduled().forEach(renovation -> {
             if (renovation.getCountersink() != null && renovation.getCheckStatus() && renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
                 renovation.setCheckStatus(false);
                 renovation.getCountersink().setCheckStatus(true);
                 this.update(renovation.getCountersink());
                 renovationService.update(renovation);
+                log.info(String.format("Обслуживание %s закончилось", renovation.getCountersink().getName()));
             }
         });
     }

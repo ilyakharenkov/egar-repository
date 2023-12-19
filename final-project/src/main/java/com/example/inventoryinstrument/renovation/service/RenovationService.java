@@ -1,6 +1,7 @@
 package com.example.inventoryinstrument.renovation.service;
 
 import com.example.inventoryinstrument.renovation.model.Renovation;
+import com.example.inventoryinstrument.renovation.model.RenovationDto;
 import com.example.inventoryinstrument.renovation.repository.RenovationRepository;
 import com.example.inventoryinstrument.renovation.mapper.RenovationMapper;
 import lombok.AllArgsConstructor;
@@ -8,15 +9,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class RenovationService {
     private final RenovationRepository renovationRepository;
-
     private final RenovationMapper renovationMapper;
 
-    public List<Renovation> findAll() {
+    public List<RenovationDto> findAll() {
+        return renovationRepository.findAll()
+                .stream()
+                .map(renovationMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<Renovation> findAllForScheduled() {
         return renovationRepository.findAll();
     }
 

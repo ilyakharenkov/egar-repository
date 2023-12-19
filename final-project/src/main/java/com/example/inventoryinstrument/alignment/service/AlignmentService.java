@@ -7,6 +7,7 @@ import com.example.inventoryinstrument.alignment.repository.AlignmentRepository;
 import com.example.inventoryinstrument.renovation.service.RenovationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AlignmentService {
@@ -63,12 +65,13 @@ public class AlignmentService {
     @Scheduled(cron = "0 30 5 * * *", zone = "Europe/Moscow")
     @Transactional
     public void endRenovationTime() {
-        renovationService.findAll().forEach(renovation -> {
+        renovationService.findAllForScheduled().forEach(renovation -> {
             if (renovation.getAlignment() != null && renovation.getCheckStatus() && renovation.getEndRenovation().compareTo(LocalDate.now()) <= 0) {
                 renovation.setCheckStatus(false);
                 renovation.getAlignment().setCheckStatus(true);
                 this.update(renovation.getAlignment());
                 renovationService.update(renovation);
+                log.info(String.format("Обслуживание %s закончилось", renovation.getAlignment().getName()));
             }
         });
     }

@@ -2,10 +2,11 @@ package com.example.inventoryinstrument.rent.service;
 
 import com.example.inventoryinstrument.archive.model.Archive;
 import com.example.inventoryinstrument.client.model.Client;
+import com.example.inventoryinstrument.rent.mapper.RentMapper;
 import com.example.inventoryinstrument.rent.model.Rent;
 import com.example.inventoryinstrument.rent.repository.RentRepository;
-import com.example.inventoryinstrument.rent.mapper.RentMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RentService {
 
     private final RentRepository rentRepository;
-
     private final RentMapper rentMapper;
 
     //Спсиок всей аренды.
@@ -112,13 +113,10 @@ public class RentService {
     @Transactional
     public void timeOutRent() {
         findAll().forEach(rent -> {
-            if (rent != null) {
-                if (rent.getCheckStatus()) {
-                    if (rent.getEndRental().compareTo(LocalDate.now()) <= 0) {
-                        rent.setCheckStatus(false);
-                        this.update(rent);
-                    }
-                }
+            if (rent != null && rent.getCheckStatus() && rent.getEndRental().compareTo(LocalDate.now()) <= 0) {
+                rent.setCheckStatus(false);
+                this.update(rent);
+                log.info(String.format("Время аренды %s закончилось", rent));
             }
         });
     }
