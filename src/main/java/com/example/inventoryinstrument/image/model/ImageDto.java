@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Blob;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,11 +17,9 @@ public class ImageDto {
 
         private Long id;
 
-        //Имя файла.
         private String name;
 
-        //Путь к файлу.
-        private String downloadLink;
+        private Blob blob;
 
         private AlignmentDto alignmentDto;
 

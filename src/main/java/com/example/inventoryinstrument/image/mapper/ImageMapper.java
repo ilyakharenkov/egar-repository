@@ -13,7 +13,7 @@ public class ImageMapper {
         return ImageDto.builder()
                 .id(image.getId())
                 .name(image.getName())
-                .downloadLink(image.getDownloadLink())
+                .blob(image.getBlob())
                 .build();
     }
 
@@ -21,7 +21,7 @@ public class ImageMapper {
         return Image.builder()
                 .id(imageDto.getId())
                 .name(imageDto.getName())
-                .downloadLink(imageDto.getDownloadLink())
+                .blob(imageDto.getBlob())
                 .build();
     }
 

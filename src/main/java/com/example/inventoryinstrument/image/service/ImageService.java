@@ -7,9 +7,11 @@ import com.example.inventoryinstrument.image.repository.ImageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,26 +19,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class ImageService {
-
     private final ImageRepository imageRepository;
-
-    //Путь к файлам сущности Alignment (Центровки).
-//    private static final String DIRECTORY_ALIGNMENT = System.getProperty("user.dir") + "/src/main/resources/storage/alignment/";
-
-    //Тестовый путь к директории.
-    private static final String DIRECTORY_ALIGNMENT = ResourceUtils.CLASSPATH_URL_PREFIX + "storage/alignment/";
-
-    //Путь к файлам сущности Countersink (Зенковки).
-    private static final String DIRECTORY_COUNTERSINK = System.getProperty("user.dir") + "/src/main/resources/storage/countersink";
 
     public List<Image> findAll() {
         return imageRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        imageRepository.deleteById(id);
     }
 
     public void save(Image image) {
@@ -44,26 +42,32 @@ public class ImageService {
     }
 
     //Получение файла по его пути.
-    public File getImageDirectory(Long id) throws FileNotFoundException {
+    public Image getImageDirectory(Long id) {
         for (Image image : findAll()) {
             if (image.getId().equals(id)) {
-                return ResourceUtils.getFile(image.getDownloadLink() + image.getName());
+                var i = imageRepository.findById(image.getId());
+                return i.orElse(new Image());
             }
         }
-        return new File("");
+        return new Image();
     }
 
     //Сохранение сущности Image для Alignment.
+    @Transactional
     public void saveImageAlignment(List<MultipartFile> multipartFileList, Alignment alignment) {
         multipartFileList.forEach(multipartFile -> {
-            if (!multipartFile.isEmpty() && alignment != null) {
-                writeFile(multipartFile, DIRECTORY_ALIGNMENT);
-                var image = Image.builder()
-                        .name(multipartFile.getOriginalFilename())
-                        .downloadLink(DIRECTORY_ALIGNMENT)
-                        .alignment(alignment)
-                        .build();
-                this.save(image);
+            try {
+                Blob blob = new SerialBlob(multipartFile.getBytes());
+                if (!multipartFile.isEmpty() && alignment != null) {
+                    var image = Image.builder()
+                            .name(multipartFile.getOriginalFilename())
+                            .blob(blob)
+                            .alignment(alignment)
+                            .build();
+                    this.save(image);
+                }
+            } catch (SQLException | IOException e) {
+                log.info(e.getMessage());
             }
         });
     }
@@ -71,51 +75,49 @@ public class ImageService {
     //Сохранение сущности Image для Countersink.
     public void saveImageCountersink(List<MultipartFile> multipartFileList, Countersink countersink) {
         multipartFileList.forEach(multipartFile -> {
-            if (!multipartFile.isEmpty()) {
-                writeFile(multipartFile, DIRECTORY_COUNTERSINK);
-                var image = Image.builder()
-                        .name(multipartFile.getOriginalFilename())
-                        .downloadLink(DIRECTORY_COUNTERSINK)
-                        .countersink(countersink)
-                        .build();
-                this.save(image);
+            try {
+                Blob blob = new SerialBlob(multipartFile.getBytes());
+                if (!multipartFile.isEmpty()) {
+                    var image = Image.builder()
+                            .name(multipartFile.getOriginalFilename())
+                            .blob(blob)
+                            .countersink(countersink)
+                            .build();
+                    this.save(image);
+                }
+            } catch (SQLException | IOException e) {
+                log.info(e.getMessage());
             }
         });
-    }
-
-    //Создание и запись файла.
-    private void writeFile(MultipartFile multipartFile, String directory) {
-//        Path path = Paths.get(directory, multipartFile.getOriginalFilename());
-//        try {
-//            Files.write(path, multipartFile.getBytes());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        // Не может сохранить файл:
-        // class path resource [storage/alignment/**.png] cannot be resolved to absolute file path because it does not exist
-//        try {
-//            var file = ResourceUtils.getFile(directory + multipartFile.getOriginalFilename());
-//            log.info(String.valueOf(file.toPath()));
-//            FileOutputStream fos = new FileOutputStream(file);
-//            fos.write(multipartFile.getBytes());
-//            fos.close();
-////            Files.write(file.toPath(), multipartFile.getBytes());
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     //Удаление файла из ресурсов.
     public void deleteFile(List<Image> imageList) {
-        imageList.forEach(image -> {
-            try {
-                var path = ResourceUtils.getFile(image.getDownloadLink() + image.getName()).toPath();
-                Files.delete(path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        imageList.forEach(image ->
+                deleteById(image.getId())
+        );
+    }
+
+    //Получение изображения alignment.jpg которое находится в ресурсах.
+    public File getImageStaticAlignment() {
+        try {
+            return ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX
+                    + "storage/alignment/alignment.jpg");
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
+        return new File("");
+    }
+
+    //Получение изображения countersink.jpg которое находится в ресурсах.
+    public File getImageStaticCountersink() {
+        try {
+            return ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX
+                    + "storage/countersink/countersink.jpg");
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
+        return new File("");
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Blob;
 
 
 @Entity
@@ -21,13 +22,12 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Имя файла.
     @Column
     private String name;
 
-    //Путь к файлу.
+    @Lob
     @Column
-    private String downloadLink;
+    private Blob blob;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Alignment alignment;
