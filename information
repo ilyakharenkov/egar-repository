@@ -690,3 +690,419 @@
 2023-12-22T12:42:31.591+03:00 DEBUG 2992 --- [http-nio-8081-exec-3] org.hibernate.SQL                        : select r1_0.user_security_id,r1_1.id,r1_1.name from user_security_role r1_0 join role r1_1 on r1_1.id=r1_0.role_id where r1_0.user_security_id=?
 2023-12-22T12:42:31.593+03:00 DEBUG 2992 --- [http-nio-8081-exec-3] org.hibernate.SQL                        : select c1_0.id,c1_0.first_name,c1_0.surname from client c1_0 where c1_0.id=?
 2023-12-22T12:42:31.593+03:00 DEBUG 2992 --- [http-nio-8081-exec-3] org.hibernate.SQL                        : select u1_0.id,u1_0.client_id,u1_0.password,u1_0.username from user_security u1_0 where u1_0.client_id=?
+2023-12-22T13:05:39.055+03:00  INFO 3640 --- [main] c.e.i.a.r.AlignmentRepositoryTests       : Starting AlignmentRepositoryTests using Java 17.0.8.1 with PID 3640 (started by User in E:\GitHubRepository\inventory-instrument)
+2023-12-22T13:05:39.056+03:00  INFO 3640 --- [main] c.e.i.a.r.AlignmentRepositoryTests       : No active profile set, falling back to 1 default profile: "default"
+2023-12-22T13:05:39.379+03:00  INFO 3640 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-12-22T13:05:39.469+03:00  INFO 3640 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 11 JPA repository interfaces.
+2023-12-22T13:05:39.521+03:00  INFO 3640 --- [main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2023-12-22T13:05:39.718+03:00  INFO 3640 --- [main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:d3fe4446-1a76-4963-bd6e-1d6c69e8d133;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2023-12-22T13:05:39.947+03:00  INFO 3640 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-12-22T13:05:39.996+03:00  INFO 3640 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22T13:05:39.998+03:00  INFO 3640 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-12-22T13:05:40.028+03:00 DEBUG 3640 --- [main] o.h.c.internal.RegionFactoryInitiator    : Cannot default RegionFactory based on registered strategies as `[]` RegionFactory strategies were registered
+2023-12-22T13:05:40.029+03:00 DEBUG 3640 --- [main] o.h.c.internal.RegionFactoryInitiator    : Cache region factory : org.hibernate.cache.internal.NoCachingRegionFactory
+2023-12-22T13:05:40.106+03:00  INFO 3640 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-12-22T13:05:40.233+03:00  INFO 3640 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-12-22T13:05:40.267+03:00  WARN 3640 --- [main] org.hibernate.dialect.Dialect            : HHH000511: The 2.1.0 version for [org.hibernate.dialect.PostgreSQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 10.0.0. Check the community dialects project for available legacy versions.
+2023-12-22T13:05:40.528+03:00  INFO 3640 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-12-22T13:05:41.185+03:00  INFO 3640 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22T13:05:41.218+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table alignment (id bigserial not null, angle integer not null check ((angle<=120) and (angle>=90)), check_status boolean not null, diameter integer not null check (diameter>=1), length integer not null check (length>=10), name varchar(255) not null, work_length integer not null check (work_length>=2), price_id bigint not null, primary key (id))
+2023-12-22T13:05:41.224+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table archive (id bigserial not null, create_archive date, day_rent integer, delete_archive date, end_rental date, id_client bigint, id_instrument bigint, name_client varchar(255), name_instrument varchar(255), start_rental date, surname_client varchar(255), primary key (id))
+2023-12-22T13:05:41.225+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table client (id bigserial not null, first_name varchar(255) not null, surname varchar(255) not null, primary key (id))
+2023-12-22T13:05:41.227+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table countersink (id bigserial not null, angle integer not null check ((angle<=120) and (angle>=90)), check_status boolean not null, diameter integer not null check (diameter>=1), length integer not null check (length>=10), name varchar(255) not null, work_length integer not null check (work_length>=2), price_id bigint not null, primary key (id))
+2023-12-22T13:05:41.228+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id))
+2023-12-22T13:05:41.229+03:00  WARN 3640 --- [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id))" via JDBC [Неизвестный тип данных: "OID"
+Unknown data type: "OID";]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id))" via JDBC [Неизвестный тип данных: "OID"
+Unknown data type: "OID";]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:92) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:315) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:80) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:284) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:444) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1455) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1158) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader.lambda$loadContext$3(SpringBootContextLoader.java:137) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:58) ~[spring-core-6.0.12.jar:6.0.12]
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:46) ~[spring-core-6.0.12.jar:6.0.12]
+	at org.springframework.boot.SpringApplication.withHook(SpringApplication.java:1409) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextLoaderHook.run(SpringBootContextLoader.java:545) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:137) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:108) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:187) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:119) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:127) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:141) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:97) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:241) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$10(ClassBasedTestDescriptor.java:377) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:382) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$11(ClassBasedTestDescriptor.java:377) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179) ~[na:na]
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499) ~[na:na]
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:310) ~[na:na]
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735) ~[na:na]
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762) ~[na:na]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:376) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:289) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:288) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:278) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at java.base/java.util.Optional.orElseGet(Optional.java:364) ~[na:na]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:277) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:105) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:104) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:68) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:123) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:123) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:90) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:71) ~[junit5-rt.jar:na]
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38) ~[junit-rt.jar:na]
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11) ~[idea_rt.jar:na]
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35) ~[junit-rt.jar:na]
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:235) ~[junit-rt.jar:na]
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:54) ~[junit-rt.jar:na]
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Неизвестный тип данных: "OID"
+Unknown data type: "OID"; SQL statement:
+create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id)) [50004-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.message.DbException.get(DbException.java:223) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.message.DbException.get(DbException.java:199) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.readIfDataType1(Parser.java:6249) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.readIfDataType(Parser.java:6087) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseColumnWithType(Parser.java:6069) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:5948) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseTableColumnDefinition(Parser.java:9331) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseCreateTable(Parser.java:9271) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseCreate(Parser.java:6784) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parsePrepared(Parser.java:763) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parse(Parser.java:689) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parse(Parser.java:661) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.prepareCommand(Parser.java:569) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223) ~[h2-2.1.214.jar:2.1.214]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:78) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	... 115 common frames omitted
+
+2023-12-22T13:05:41.238+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table price (id bigserial not null, expenses float(53) not null, markup integer not null, price_rent_of_day float(53) not null, purchase float(53) not null, primary key (id))
+2023-12-22T13:05:41.239+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table profit (id bigserial not null, day_rent integer not null, income float(53) not null, tax float(53) not null, rent_id bigint, primary key (id))
+2023-12-22T13:05:41.240+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table renovation (id bigserial not null, check_status boolean, count_day integer not null check (count_day>=1), description_result varchar(255) not null, end_renovation date not null, price_diagnostics float(53) not null, result_price float(53) not null, start_renovation date not null, alignment_id bigint, countersink_id bigint, primary key (id))
+2023-12-22T13:05:41.242+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table rent (id bigserial not null, check_status boolean, day_rent integer not null check (day_rent>=1), end_rental date not null, start_rental date not null, alignment_id bigint, archive_id bigint, client_id bigint, countersink_id bigint, primary key (id))
+2023-12-22T13:05:41.243+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table role (id bigserial not null, name varchar(255), primary key (id))
+2023-12-22T13:05:41.244+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table user_security_role (user_security_id bigint not null, role_id bigint not null, primary key (user_security_id, role_id))
+2023-12-22T13:05:41.245+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : create table user_security (id bigserial not null, password varchar(255) not null, username varchar(255) not null, client_id bigint, primary key (id))
+2023-12-22T13:05:41.247+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists alignment drop constraint if exists UK_ub41y7nsimooebldp0824dsh
+2023-12-22T13:05:41.247+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists alignment add constraint UK_ub41y7nsimooebldp0824dsh unique (price_id)
+2023-12-22T13:05:41.248+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists countersink drop constraint if exists UK_gx0a4o5don3gmsvnw1b2s6uce
+2023-12-22T13:05:41.248+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists countersink add constraint UK_gx0a4o5don3gmsvnw1b2s6uce unique (price_id)
+2023-12-22T13:05:41.249+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent drop constraint if exists UK_5davgx4c7d2ujyti41bkyy5yv
+2023-12-22T13:05:41.249+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint UK_5davgx4c7d2ujyti41bkyy5yv unique (alignment_id)
+2023-12-22T13:05:41.249+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent drop constraint if exists UK_8wx2g0cl3payigapkde9cgch2
+2023-12-22T13:05:41.250+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint UK_8wx2g0cl3payigapkde9cgch2 unique (archive_id)
+2023-12-22T13:05:41.250+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent drop constraint if exists UK_44pgbgsunqk8x5fuym4353su5
+2023-12-22T13:05:41.250+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint UK_44pgbgsunqk8x5fuym4353su5 unique (countersink_id)
+2023-12-22T13:05:41.251+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists role drop constraint if exists UK_8sewwnpamngi6b1dwaa88askk
+2023-12-22T13:05:41.251+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists role add constraint UK_8sewwnpamngi6b1dwaa88askk unique (name)
+2023-12-22T13:05:41.252+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists user_security drop constraint if exists UK_93hu34ym3flcqy6hyvqtlqc0x
+2023-12-22T13:05:41.252+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists user_security add constraint UK_93hu34ym3flcqy6hyvqtlqc0x unique (client_id)
+2023-12-22T13:05:41.252+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists alignment add constraint FKh11rv5tjr8xlmhp23pjeeq2b1 foreign key (price_id) references price
+2023-12-22T13:05:41.256+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists countersink add constraint FK967hugdkpyvgglkloo1ctid9w foreign key (price_id) references price
+2023-12-22T13:05:41.256+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists image add constraint FKi6bi7qkjwr2s2232m0mhhcymc foreign key (alignment_id) references alignment
+2023-12-22T13:05:41.256+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists image add constraint FK8cn75jqw3ulv1wvqduorfuc6v foreign key (countersink_id) references countersink
+2023-12-22T13:05:41.256+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists profit add constraint FKcq9aa6xgilm766n2m9lib5vtf foreign key (rent_id) references rent
+2023-12-22T13:05:41.257+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists renovation add constraint FKahwaulm6hci4hn881axrtnt42 foreign key (alignment_id) references alignment
+2023-12-22T13:05:41.258+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists renovation add constraint FKgai57l03swasa19md82f9b2w5 foreign key (countersink_id) references countersink
+2023-12-22T13:05:41.259+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FK19d36j0qq4bd86l9c1xd30x5p foreign key (alignment_id) references alignment
+2023-12-22T13:05:41.260+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FKineegipilt9vwhtl9g0g187j foreign key (archive_id) references archive
+2023-12-22T13:05:41.261+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FKtl9uohe6mseu8h2e3r5jptf4l foreign key (client_id) references client
+2023-12-22T13:05:41.262+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FKmfse51a67xq1ggjwwyw9vcl69 foreign key (countersink_id) references countersink
+2023-12-22T13:05:41.263+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists user_security_role add constraint FKst1wsl7cqsuo6h7f1ymkdo98g foreign key (role_id) references role
+2023-12-22T13:05:41.264+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists user_security_role add constraint FKlf5si4wa8in31wjql0084h5ce foreign key (user_security_id) references user_security
+2023-12-22T13:05:41.265+03:00 DEBUG 3640 --- [main] org.hibernate.SQL                        : alter table if exists user_security add constraint FKix3e837b2e3c2y3tw7mrvjq8v foreign key (client_id) references client
+2023-12-22T13:05:41.267+03:00  INFO 3640 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-12-22T13:05:41.455+03:00 DEBUG 3640 --- [main] o.h.stat.internal.StatisticsInitiator    : Statistics initialized [enabled=false]
+2023-12-22T13:05:41.737+03:00  INFO 3640 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-12-22T13:05:42.249+03:00  INFO 3640 --- [main] c.e.i.a.r.AlignmentRepositoryTests       : Started AlignmentRepositoryTests in 3.511 seconds (process running for 4.537)
+2023-12-22T13:05:42.733+03:00  INFO 3640 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-12-22T13:06:04.414+03:00  INFO 10740 --- [main] c.e.i.a.r.AlignmentRepositoryTests       : Starting AlignmentRepositoryTests using Java 17.0.8.1 with PID 10740 (started by User in E:\GitHubRepository\inventory-instrument)
+2023-12-22T13:06:04.416+03:00  INFO 10740 --- [main] c.e.i.a.r.AlignmentRepositoryTests       : No active profile set, falling back to 1 default profile: "default"
+2023-12-22T13:06:04.830+03:00  INFO 10740 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-12-22T13:06:04.923+03:00  INFO 10740 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 84 ms. Found 11 JPA repository interfaces.
+2023-12-22T13:06:04.983+03:00  INFO 10740 --- [main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2023-12-22T13:06:05.123+03:00  INFO 10740 --- [main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:a636e991-ffdb-426d-9b89-23d050dba9e3;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2023-12-22T13:06:05.388+03:00  INFO 10740 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-12-22T13:06:05.443+03:00  INFO 10740 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22T13:06:05.445+03:00  INFO 10740 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-12-22T13:06:05.481+03:00 DEBUG 10740 --- [main] o.h.c.internal.RegionFactoryInitiator    : Cannot default RegionFactory based on registered strategies as `[]` RegionFactory strategies were registered
+2023-12-22T13:06:05.481+03:00 DEBUG 10740 --- [main] o.h.c.internal.RegionFactoryInitiator    : Cache region factory : org.hibernate.cache.internal.NoCachingRegionFactory
+2023-12-22T13:06:05.567+03:00  INFO 10740 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-12-22T13:06:05.573+03:00  INFO 10740 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-12-22T13:06:05.603+03:00  WARN 10740 --- [main] org.hibernate.dialect.Dialect            : HHH000511: The 2.1.0 version for [org.hibernate.dialect.PostgreSQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 10.0.0. Check the community dialects project for available legacy versions.
+2023-12-22T13:06:05.862+03:00  INFO 10740 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-12-22T13:06:06.381+03:00  INFO 10740 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22T13:06:06.416+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table alignment (id bigserial not null, angle integer not null check ((angle<=120) and (angle>=90)), check_status boolean not null, diameter integer not null check (diameter>=1), length integer not null check (length>=10), name varchar(255) not null, work_length integer not null check (work_length>=2), price_id bigint not null, primary key (id))
+2023-12-22T13:06:06.424+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table archive (id bigserial not null, create_archive date, day_rent integer, delete_archive date, end_rental date, id_client bigint, id_instrument bigint, name_client varchar(255), name_instrument varchar(255), start_rental date, surname_client varchar(255), primary key (id))
+2023-12-22T13:06:06.425+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table client (id bigserial not null, first_name varchar(255) not null, surname varchar(255) not null, primary key (id))
+2023-12-22T13:06:06.426+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table countersink (id bigserial not null, angle integer not null check ((angle<=120) and (angle>=90)), check_status boolean not null, diameter integer not null check (diameter>=1), length integer not null check (length>=10), name varchar(255) not null, work_length integer not null check (work_length>=2), price_id bigint not null, primary key (id))
+2023-12-22T13:06:06.428+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id))
+2023-12-22T13:06:06.429+03:00  WARN 10740 --- [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id))" via JDBC [Неизвестный тип данных: "OID"
+Unknown data type: "OID";]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id))" via JDBC [Неизвестный тип данных: "OID"
+Unknown data type: "OID";]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:92) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:315) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:80) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:284) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:444) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1455) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1158) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader.lambda$loadContext$3(SpringBootContextLoader.java:137) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:58) ~[spring-core-6.0.12.jar:6.0.12]
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:46) ~[spring-core-6.0.12.jar:6.0.12]
+	at org.springframework.boot.SpringApplication.withHook(SpringApplication.java:1409) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextLoaderHook.run(SpringBootContextLoader.java:545) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:137) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:108) ~[spring-boot-test-3.1.4.jar:3.1.4]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:187) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:119) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:127) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:141) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:97) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:241) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138) ~[spring-test-6.0.12.jar:6.0.12]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$10(ClassBasedTestDescriptor.java:377) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:382) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$11(ClassBasedTestDescriptor.java:377) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179) ~[na:na]
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499) ~[na:na]
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:310) ~[na:na]
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735) ~[na:na]
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762) ~[na:na]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:376) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:289) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:288) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:278) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at java.base/java.util.Optional.orElseGet(Optional.java:364) ~[na:na]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:277) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:105) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:104) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:68) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:123) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:123) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:90) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54) ~[junit-platform-engine-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53) ~[junit-platform-launcher-1.9.3.jar:1.9.3]
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:71) ~[junit5-rt.jar:na]
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38) ~[junit-rt.jar:na]
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11) ~[idea_rt.jar:na]
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35) ~[junit-rt.jar:na]
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:235) ~[junit-rt.jar:na]
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:54) ~[junit-rt.jar:na]
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Неизвестный тип данных: "OID"
+Unknown data type: "OID"; SQL statement:
+create table image (id bigserial not null, blob oid, name varchar(255), alignment_id bigint, countersink_id bigint, primary key (id)) [50004-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.message.DbException.get(DbException.java:223) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.message.DbException.get(DbException.java:199) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.readIfDataType1(Parser.java:6249) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.readIfDataType(Parser.java:6087) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseColumnWithType(Parser.java:6069) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:5948) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseTableColumnDefinition(Parser.java:9331) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseCreateTable(Parser.java:9271) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parseCreate(Parser.java:6784) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parsePrepared(Parser.java:763) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parse(Parser.java:689) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.parse(Parser.java:661) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.command.Parser.prepareCommand(Parser.java:569) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237) ~[h2-2.1.214.jar:2.1.214]
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223) ~[h2-2.1.214.jar:2.1.214]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:78) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	... 115 common frames omitted
+
+2023-12-22T13:06:06.437+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table price (id bigserial not null, expenses float(53) not null, markup integer not null, price_rent_of_day float(53) not null, purchase float(53) not null, primary key (id))
+2023-12-22T13:06:06.439+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table profit (id bigserial not null, day_rent integer not null, income float(53) not null, tax float(53) not null, rent_id bigint, primary key (id))
+2023-12-22T13:06:06.440+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table renovation (id bigserial not null, check_status boolean, count_day integer not null check (count_day>=1), description_result varchar(255) not null, end_renovation date not null, price_diagnostics float(53) not null, result_price float(53) not null, start_renovation date not null, alignment_id bigint, countersink_id bigint, primary key (id))
+2023-12-22T13:06:06.441+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table rent (id bigserial not null, check_status boolean, day_rent integer not null check (day_rent>=1), end_rental date not null, start_rental date not null, alignment_id bigint, archive_id bigint, client_id bigint, countersink_id bigint, primary key (id))
+2023-12-22T13:06:06.442+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table role (id bigserial not null, name varchar(255), primary key (id))
+2023-12-22T13:06:06.443+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table user_security_role (user_security_id bigint not null, role_id bigint not null, primary key (user_security_id, role_id))
+2023-12-22T13:06:06.445+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : create table user_security (id bigserial not null, password varchar(255) not null, username varchar(255) not null, client_id bigint, primary key (id))
+2023-12-22T13:06:06.446+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists alignment drop constraint if exists UK_ub41y7nsimooebldp0824dsh
+2023-12-22T13:06:06.447+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists alignment add constraint UK_ub41y7nsimooebldp0824dsh unique (price_id)
+2023-12-22T13:06:06.447+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists countersink drop constraint if exists UK_gx0a4o5don3gmsvnw1b2s6uce
+2023-12-22T13:06:06.448+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists countersink add constraint UK_gx0a4o5don3gmsvnw1b2s6uce unique (price_id)
+2023-12-22T13:06:06.448+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent drop constraint if exists UK_5davgx4c7d2ujyti41bkyy5yv
+2023-12-22T13:06:06.448+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint UK_5davgx4c7d2ujyti41bkyy5yv unique (alignment_id)
+2023-12-22T13:06:06.449+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent drop constraint if exists UK_8wx2g0cl3payigapkde9cgch2
+2023-12-22T13:06:06.449+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint UK_8wx2g0cl3payigapkde9cgch2 unique (archive_id)
+2023-12-22T13:06:06.450+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent drop constraint if exists UK_44pgbgsunqk8x5fuym4353su5
+2023-12-22T13:06:06.450+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint UK_44pgbgsunqk8x5fuym4353su5 unique (countersink_id)
+2023-12-22T13:06:06.450+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists role drop constraint if exists UK_8sewwnpamngi6b1dwaa88askk
+2023-12-22T13:06:06.450+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists role add constraint UK_8sewwnpamngi6b1dwaa88askk unique (name)
+2023-12-22T13:06:06.451+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists user_security drop constraint if exists UK_93hu34ym3flcqy6hyvqtlqc0x
+2023-12-22T13:06:06.451+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists user_security add constraint UK_93hu34ym3flcqy6hyvqtlqc0x unique (client_id)
+2023-12-22T13:06:06.452+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists alignment add constraint FKh11rv5tjr8xlmhp23pjeeq2b1 foreign key (price_id) references price
+2023-12-22T13:06:06.455+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists countersink add constraint FK967hugdkpyvgglkloo1ctid9w foreign key (price_id) references price
+2023-12-22T13:06:06.456+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists image add constraint FKi6bi7qkjwr2s2232m0mhhcymc foreign key (alignment_id) references alignment
+2023-12-22T13:06:06.456+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists image add constraint FK8cn75jqw3ulv1wvqduorfuc6v foreign key (countersink_id) references countersink
+2023-12-22T13:06:06.456+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists profit add constraint FKcq9aa6xgilm766n2m9lib5vtf foreign key (rent_id) references rent
+2023-12-22T13:06:06.457+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists renovation add constraint FKahwaulm6hci4hn881axrtnt42 foreign key (alignment_id) references alignment
+2023-12-22T13:06:06.459+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists renovation add constraint FKgai57l03swasa19md82f9b2w5 foreign key (countersink_id) references countersink
+2023-12-22T13:06:06.460+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FK19d36j0qq4bd86l9c1xd30x5p foreign key (alignment_id) references alignment
+2023-12-22T13:06:06.461+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FKineegipilt9vwhtl9g0g187j foreign key (archive_id) references archive
+2023-12-22T13:06:06.462+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FKtl9uohe6mseu8h2e3r5jptf4l foreign key (client_id) references client
+2023-12-22T13:06:06.463+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists rent add constraint FKmfse51a67xq1ggjwwyw9vcl69 foreign key (countersink_id) references countersink
+2023-12-22T13:06:06.464+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists user_security_role add constraint FKst1wsl7cqsuo6h7f1ymkdo98g foreign key (role_id) references role
+2023-12-22T13:06:06.465+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists user_security_role add constraint FKlf5si4wa8in31wjql0084h5ce foreign key (user_security_id) references user_security
+2023-12-22T13:06:06.466+03:00 DEBUG 10740 --- [main] org.hibernate.SQL                        : alter table if exists user_security add constraint FKix3e837b2e3c2y3tw7mrvjq8v foreign key (client_id) references client
+2023-12-22T13:06:06.468+03:00  INFO 10740 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-12-22T13:06:06.612+03:00 DEBUG 10740 --- [main] o.h.stat.internal.StatisticsInitiator    : Statistics initialized [enabled=false]
+2023-12-22T13:06:06.907+03:00  INFO 10740 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-12-22T13:06:07.375+03:00  INFO 10740 --- [main] c.e.i.a.r.AlignmentRepositoryTests       : Started AlignmentRepositoryTests in 3.362 seconds (process running for 5.226)
+2023-12-22T13:06:07.446+03:00  INFO 10740 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
