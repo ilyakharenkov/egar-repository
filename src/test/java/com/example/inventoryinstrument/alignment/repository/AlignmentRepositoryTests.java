@@ -24,7 +24,7 @@ public class AlignmentRepositoryTests {
     @Test
     void findAll_findListAlignment() {
 
-        //Что дано.
+        //Р§С‚Рѕ РґР°РЅРѕ
         var alignmentList = List.of(
                 new Alignment(1L, "Alignment 11", 5, 40, 10, 120, true, new Price(), new Rent(), new ArrayList<>(), new ArrayList<>()),
                 new Alignment(1L, "Alignment 12", 5, 40, 10, 120, false, new Price(), new Rent(), new ArrayList<>(), new ArrayList<>()),
@@ -32,10 +32,10 @@ public class AlignmentRepositoryTests {
         );
         Mockito.doReturn(alignmentList).when(this.alignmentRepository).findAll();
 
-        //Кем выполняется.
+        //РљРµРј РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ.
         var alignmentDtoList = this.alignmentRepository.findAll();
 
-        //Что проверяем.
+        //Р§С‚Рѕ РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ.
         Assertions.assertNotNull(alignmentDtoList);
     }
 
